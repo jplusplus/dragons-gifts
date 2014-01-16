@@ -1,0 +1,14 @@
+--- 
+css_all: 
+  output: gen/style.css
+  contents: 
+    - "../assets/css/*.css"
+    - contents: "../assets/ccss/*.ccss"
+      filters: clevercss
+
+js_all: 
+  output: gen/scripts.js
+  contents: 
+    - "../assets/js/*.js"
+    - contents: "../assets/coffee/*.coffee"
+      filters: coffeescript

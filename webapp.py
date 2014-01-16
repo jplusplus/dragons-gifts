@@ -12,11 +12,20 @@
 # -----------------------------------------------------------------------------
 from flask import Flask, render_template, request, send_file, \
 	send_from_directory, Response, abort, session, redirect, url_for, make_response
-from flask.ext.assets import Environment
+from flask.ext.assets import Environment, Bundle, YAMLLoader
 
 app = Flask(__name__)
 app.config.from_pyfile("settings.cfg")
-Environment(app)
+assets = Environment(app)
+
+# js = Bundle('js.', 'base.js', 'widgets.js',
+#             filters='jsmin', output='gen/packed.js')
+# assets.register('js_all', js)
+bundles = YAMLLoader("assets.yaml").load_bundles()
+# css = Bundle('../assets/css/switchbutton.css',
+#             output='gen/style.css')
+
+assets.register(bundles)
 
 # -----------------------------------------------------------------------------
 #
@@ -35,6 +44,6 @@ def index():
 # -----------------------------------------------------------------------------
 if __name__ == '__main__':
 	# run application
-	app.run()
+	app.run(extra_files=("assets.yaml",))
 
 # EOF

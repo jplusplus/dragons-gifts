@@ -7,11 +7,22 @@
 		<link href="/img/favicon.png" type="image/png" rel="icon">
 
 		<title>Dragons Gifts</title>
+
+		{% assets "css_all" %}
+			<link rel="stylesheet" href="{{ ASSET_URL }}" type="text/css" />
+		{% endassets %}
+
 	</head>
 
 	<body class="use-base">
 
 		{% block content %}{% endblock %}
+
+		{% assets "js_all" %}
+			<script type="text/javascript" src="{{ ASSET_URL }}"></script>
+		{% endassets %}
+
+		{% block extra_js %}{% endblock %}
 
 	</body>
 </html>

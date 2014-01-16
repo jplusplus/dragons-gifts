@@ -3,3 +3,4 @@ venv/
 fabfile.py
 static/.webassets-cache/
 build/
+static/

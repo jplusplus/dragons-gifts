@@ -1,2 +1,40 @@
+
 body:
-  background: #3b3f46
+  background-color:grey
+
+.container_style:
+  margin-top: 10px
+
+.grid:
+  background-color:white
+  padding-bottom:10px
+
+#col2_title:
+  padding-left: 10px
+  color: white
+  bottom: 0
+  position: absolute
+
+#figures:
+  padding-top:10px
+
+.img_container:
+  background-image: url('/static/images/1.jpg')
+  position: relative
+  height: 300px
+
+.location:
+  font-weight: bold
+  font-size: 1.3em
+  padding-left: 10px
+  padding-top: 5px
+
+.description:
+  padding-left: 10px
+  padding-top: 5px
+
+.but:
+  margin-top: 10px
+
+#prv_button:
+  width: 104px

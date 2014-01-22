@@ -8,7 +8,13 @@ css_all:
 
 js_all: 
   output: gen/scripts.js
-  contents: 
-    - "../assets/js/*.js"
+  contents:
+    - "../assets/js/jquery172-mini.js"
+    # - "../assets/js/jquery.preload.js"
+    - "../assets/js/d3.js"
+    - "../assets/js/queue.js"
+    - "../assets/js/raf.js"
+    - "../assets/js/topojson.js"
+    - "../assets/js/bootstrap.min.js"
     - contents: "../assets/coffee/*.coffee"
       filters: coffeescript

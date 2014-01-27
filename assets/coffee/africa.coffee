@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # Encoding: utf-8
 # -----------------------------------------------------------------------------
 # Project : Dragons Gifts

@@ -21,6 +21,7 @@ class Navigation
     urls :
         geojson : "static/data/continent_Africa_subunits.json"
         tour    : "static/data/tour.json"
+
   constructor: ->
     @projects        = undefined
     @current_project = undefined
@@ -84,26 +85,26 @@ class Africa
 
     # Create svg tag
     @svg = d3.select(CONFIG.svg_block_selector)
-            .insert("svg", ":first-child")
-            .attr("width", CONFIG.svg_width)
-            .attr("height", CONFIG.svg_height)
+      .insert("svg", ":first-child")
+      .attr("width", CONFIG.svg_width)
+      .attr("height", CONFIG.svg_height)
 
     # Create projection
     @projection = d3.geo.mercator()
-                  .center([0, 5])
-                  .scale(350)
-                  .rotate([-55,5])
+      .center([0, 5])
+      .scale(350)
+      .rotate([-55,5])
 
     # Create the Africa path
     @path = d3.geo.path()
-             .projection(@projection)
+      .projection(@projection)
 
     # Create the group of path and add graticule
     @groupPaths = @svg.append("g")
-                    .attr("class", "all-path")
+      .attr("class", "all-path")
 
     @groupPoints = @svg.append("g")
-                    .attr("class", "all-points")
+      .attr("class", "all-points")
 
     @drawMap()
 

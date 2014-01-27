@@ -6,10 +6,10 @@ body:
 
 .container_style:
   margin-top: 10px
+  padding-bottom:10px
 
 .grid:
   background-color:white
-  padding-bottom:10px
   margin-bottom: -99999px
   padding-bottom: 99999px
 

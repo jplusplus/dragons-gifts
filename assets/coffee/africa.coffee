@@ -13,10 +13,10 @@ class Africa
   # Define default config
   config =
     # SVG
-    svgBlockSelector : ".africa-container"
-    svgHeight        : 500
-    svgWidth         : 500
-    
+    svg_block_selector : ".africa-container"
+    svg_height        : 500
+    svg_width         : 500
+    scale_range       : [5, 7]
     # DATA RESSOURCES URL
     urls :
       geojson        : "static/data/continent_Africa_subunits.json"
@@ -39,8 +39,7 @@ class Africa
     config = _.defaults(overridingConfig, config)
 
     # Define initialScale
-    config.initialScale = config.svgHeight * 0.5
-
+    config.initialScale = config.svg_height * 0.5
 
   #
   # Initialize SVG context + sphere
@@ -48,10 +47,10 @@ class Africa
   initSVG: () =>
 
     # Create svg tag
-    svg = d3.select(config.svgBlockSelector)
+    svg = d3.select(config.svg_block_selector)
             .insert("svg", ":first-child")
-            .attr("width", config.svgWidth)
-            .attr("height", config.svgHeight)
+            .attr("width", config.svg_width)
+            .attr("height", config.svg_height)
 
     # Create projection
     projection = d3.geo.mercator()
@@ -85,6 +84,11 @@ class Africa
   loadedDataCallback: (error, geojson, tour) =>
     # Add countries to globe
     countries = geojson.features
+    # compute scale
+    scale = d3.scale.linear()
+      .domain(tour.map((d) -> parseInt(d.usd_defl)))
+      .range(config.scale_range)
+
     # Create every countries
     groupPaths.selectAll("path")
                 .data(countries)
@@ -101,7 +105,7 @@ class Africa
     ).attr("cy", (d) ->
       projection([d.lon, d.lat])[1]
     )
-    .attr("r", 5)
+    .attr("r", (d) -> scale(parseInt(d.usd_defl)))
     .style("fill", "red")
 
 # -----------------------------------------------------------------------------

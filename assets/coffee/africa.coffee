@@ -48,8 +48,8 @@ class Africa
     # Create projection
     projection = d3.geo.mercator()
                   .center([0, 5])
-                  .scale(300)
-                  .rotate([180,0])
+                  .scale(350)
+                  .rotate([-55,5])
 
     # Create the Africa path
     path = d3.geo.path()

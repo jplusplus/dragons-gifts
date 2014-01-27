@@ -86,28 +86,26 @@ class Africa
     countries = geojson.features
     # compute scale
     values = tour.map((d) -> parseFloat(d.usd_defl))
-    scale = d3.scale.linear()
+    scale  = d3.scale.linear()
       .domain([Math.min.apply(Math, values), Math.max.apply(Math, values)])
       .range(config.scale_range)
 
     # Create every countries
     groupPaths.selectAll("path")
-                .data(countries)
-                .enter()
-                  .append("path")
-                  .attr("d", path)
+      .data(countries)
+      .enter()
+        .append("path")
+        .attr("d", path)
 
     @groupPoints.selectAll("circle")
-    .data(tour)
-    .enter()
-    .append("circle")
-    .attr("cx", (d) ->
-      projection([d.lon, d.lat])[0]
-    ).attr("cy", (d) ->
-      projection([d.lon, d.lat])[1]
-    )
-    .attr("r", (d) -> scale(parseFloat(d.usd_defl)))
-    .style("fill", "red")
+      .data(tour)
+      .enter()
+        .append("circle")
+          .attr("cx", (d) -> projection([d.lon, d.lat])[0])
+          .attr("cy", (d) -> projection([d.lon, d.lat])[1])
+          .attr("r", (d) -> scale(parseFloat(d.usd_defl)))
+          .style("fill", "red")
+          .on('click', setTour)
 
 # -----------------------------------------------------------------------------
 #

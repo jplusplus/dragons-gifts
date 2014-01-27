@@ -1,26 +1,36 @@
+#!/usr/bin/env python
+# Encoding: utf-8
+# -----------------------------------------------------------------------------
+# Project : Dragons Gifts
+# -----------------------------------------------------------------------------
+# Author :
+# -----------------------------------------------------------------------------
+# License : GNU Lesser General Public License
+# -----------------------------------------------------------------------------
+# Creation : 16-Jan-2014
+# Last mod : 27-Jan-2014
+# -----------------------------------------------------------------------------
 class Africa
   # Define default config
   config =
     # SVG
-    svgBlockSelector: ".africa-container"
-    svgHeight: 500
-    svgWidth: 500
-
+    svgBlockSelector : ".africa-container"
+    svgHeight        : 500
+    svgWidth         : 500
     
     # DATA RESSOURCES URL
-    urlWorldTopojson: "static/data/world-110m2.json"
-    urlCities: "static/data/cities.csv"
-
+    urls :
+      geojson        : "static/data/continent_Africa_subunits.json"
+      tour           : "static/data/tour.json"
 
   # Declare variables
   svg = projection = path = groupPaths = null
 
-  currentRotation = config.globeDefaultRotation     # Store the current rotation of the globe
-  currentLevel    = 1                               # Store the current level (1 or 2)
-  manualRotationActivated = true                    # If true, mouse move calculation with me
-                                                    # activated for manual rotate
-
-  groupPathsSelection = {}    # Store the groupPath selection of element to avoid reselecting DOM
+  currentRotation         = config.globeDefaultRotation     # Store the current rotation of the globe
+  currentLevel            = 1                               # Store the current level (1 or 2)
+  manualRotationActivated = true                            # If true, mouse move calculation with me
+                                                            # activated for manual rotat
+  groupPathsSelection     = {}                              # Store the groupPath selection of element to avoid reselecting DOM
 
   #
   # Contruct class instance
@@ -44,7 +54,6 @@ class Africa
             .attr("width", config.svgWidth)
             .attr("height", config.svgHeight)
 
-
     # Create projection
     projection = d3.geo.mercator()
                   .center([0, 5])
@@ -61,30 +70,22 @@ class Africa
 
     @groupPoints = svg.append("g")
                     .attr("class", "all-points")
-
-
-
   #
   # Load and display data
   #
   start: () =>
     @initSVG()
     queue()
-      .defer(d3.json, config.urlWorldTopojson)
-      .defer(d3.csv, config.urlCities)
-
+      .defer(d3.json, config.urls.geojson)
+      .defer(d3.json, config.urls.tour)
       .await(this.loadedDataCallback)
-
-
   #
   # Compute data after loading :
   #  - Build country paths
   #
-  loadedDataCallback: (error, worldTopo, cities) =>
-
+  loadedDataCallback: (error, geojson, tour) =>
     # Add countries to globe
-    countries = topojson.object(worldTopo, worldTopo.objects.countries).geometries
-
+    countries = geojson.features
     # Create every countries
     groupPaths.selectAll("path")
                 .data(countries)
@@ -93,7 +94,7 @@ class Africa
                   .attr("d", path)
 
     @groupPoints.selectAll("circle")
-    .data(cities)
+    .data(tour)
     .enter()
     .append("circle")
     .attr("cx", (d) ->
@@ -103,7 +104,13 @@ class Africa
     )
     .attr("r", 5)
     .style("fill", "red")
-          
 
+# -----------------------------------------------------------------------------
+#
+#    MAIN
+#
+# -----------------------------------------------------------------------------
 globe = new Africa()
 globe.start()
+
+# EOF

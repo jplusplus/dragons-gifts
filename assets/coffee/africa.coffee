@@ -16,7 +16,7 @@ class Africa
     svg_block_selector : ".africa-container"
     svg_height        : 500
     svg_width         : 500
-    scale_range       : [5, 7]
+    scale_range       : [6, 9]
     # DATA RESSOURCES URL
     urls :
       geojson        : "static/data/continent_Africa_subunits.json"
@@ -85,8 +85,9 @@ class Africa
     # Add countries to globe
     countries = geojson.features
     # compute scale
+    values = tour.map((d) -> parseFloat(d.usd_defl))
     scale = d3.scale.linear()
-      .domain(tour.map((d) -> parseInt(d.usd_defl)))
+      .domain([Math.min.apply(Math, values), Math.max.apply(Math, values)])
       .range(config.scale_range)
 
     # Create every countries
@@ -105,7 +106,7 @@ class Africa
     ).attr("cy", (d) ->
       projection([d.lon, d.lat])[1]
     )
-    .attr("r", (d) -> scale(parseInt(d.usd_defl)))
+    .attr("r", (d) -> scale(parseFloat(d.usd_defl)))
     .style("fill", "red")
 
 # -----------------------------------------------------------------------------

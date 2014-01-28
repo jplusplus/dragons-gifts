@@ -1,5 +1,13 @@
-CIRCLE_COLOR       = #FEB7B7
-CIRCLE_COLOR_HOVER = #FF4747
+
+
+MAP_COLOR          = #00628B
+MAP_STROKE_COLOR   = $MAP_COLOR.brighten(60%)
+MAP_STROKE_WIDTH   = 1
+
+CIRCLE_COLOR       = #E6E6DC
+CIRCLE_COLOR_HOVER = $CIRCLE_COLOR.darken(70%)
+CIRCLE_STROKE      = $CIRCLE_COLOR.darken(20%)
+
 
 .col-wrap:
   overflow: hidden
@@ -8,35 +16,35 @@ body:
   background-color:grey
 
 .container_style:
-  margin-top: 10px
-  padding-bottom:10px
+  margin-top     : 10px
+  padding-bottom : 10px
 
 .grid:
-  background-color:white
-  margin-bottom: -99999px
-  padding-bottom: 99999px
+  background-color : white
+  margin-bottom    : -99999px
+  padding-bottom   : 99999px
 
 .Panel:
   .title:
-    padding-left: 10px
-    color: white
-    bottom: 0
-    position: absolute
-    font-size: 2em
+    padding-left     : 10px
+    color            : white
+    bottom           : 0
+    position         : absolute
+    font-size        : 2em
   #figures:
     padding-top:10px
   .img_container:
-    background-image: url('/static/images/1.jpg')
-    position: relative
-    height: 300px
+    background-image : url('/static/images/1.jpg')
+    position         : relative
+    height           : 300px
   .location:
-    font-weight: bold
-    font-size: 1.3em
-    padding-left: 10px
-    padding-top: 5px
+    font-weight      : bold
+    font-size        : 1.3em
+    padding-left     : 10px
+    padding-top      : 5px
   .description:
-    padding-left: 10px
-    padding-top: 5px
+    padding-left     : 10px
+    padding-top      : 5px
   .but:
     margin-top: 10px
 
@@ -44,12 +52,12 @@ body:
     width: 104px
 
 .africa-container:
-  fill: #474746
-  stroke: rgb(213, 210, 210)
-  stroke-width: .5
+  fill         : $MAP_COLOR
+  stroke       : $MAP_STROKE_COLOR
+  stroke-width : $MAP_STROKE_WIDTH
 
   circle:
-    fill: $CIRCLE_COLOR
-    stroke: $CIRCLE_COLOR.darken(20%)
+    fill   : $CIRCLE_COLOR
+    stroke : $CIRCLE_STROKE
     &:hover:
       fill: $CIRCLE_COLOR_HOVER

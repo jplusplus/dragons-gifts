@@ -28,12 +28,10 @@ class Navigation
     @current_project = 0
 
     @UIS =
-      prv_button : $("#prv_button")
-      nxt_button : $("#nxt_button")
+      page : $(".container:first")
 
-    @UIS.prv_button.on 'click', @previousProject
-    @UIS.nxt_button.on 'click', @nextProject
-
+    # Bind events
+    $(window).resize(@relayout)
 
   start: =>
     queue()
@@ -49,18 +47,26 @@ class Navigation
     @setProject(@current_project)
 
   setProject: (project) =>
+    """
+    use this function to set a project.
+    it will trigger an projectSelected event that all the other widget
+    are able to bind.
+    """
     if typeof(project) is "number"
       project = @projects[project]
     @current_project = @projects.indexOf(project)
     $(document).trigger("projectSelected", project)
 
   nextProject: =>
-    if @current_project < @projects.length - 1
+    if @hasNext()
       @setProject(@projects[@current_project + 1])
 
   previousProject: =>
-    if @current_project > 0
+    if @hasPrevious()
       @setProject(@projects[@current_project - 1])
+
+  hasNext    : => @current_project < @projects.length - 1
+  hasPrevious: => @current_project > 0
 
 # -----------------------------------------------------------------------------
 #
@@ -69,19 +75,41 @@ class Navigation
 # -----------------------------------------------------------------------------
 class Panel
 
-  constructor: ->
+  constructor: (navigation) ->
+
+    @navigation = navigation
+
     @UIS =
-      title       : $(".Panel .title")
-      location    : $(".Panel .location")
-      description : $(".Panel .single_project .description")
+      text_container : $(".Panel .single_project")
+      navigation_btn : $(".Panel .navigation-buttons")
+      prv_button     : $(".Panel #prv_button")
+      nxt_button     : $(".Panel #nxt_button")
+      title          : $(".Panel .title")
+      location       : $(".Panel .location")
+      description    : $(".Panel .single_project .description")
 
     # Bind events
     $(document).on("projectSelected", @onProjectSelected)
+    $(window).resize(@relayout)
+    @UIS.prv_button.on 'click', @navigation.previousProject
+    @UIS.nxt_button.on 'click', @navigation.nextProject
+
+    # resize
+    @relayout()
+
+  relayout: =>
+    # usefull for the scrollbar:
+    # set the description height to use the overflow: auto style
+    @UIS.description.css
+      height : $(window).height() - @UIS.description.offset().top - @UIS.navigation_btn.outerHeight(true)
 
   onProjectSelected: (e, project) =>
     @UIS.title       .html project.title
     @UIS.location    .html project.recipient_condensed
     @UIS.description .html project.description
+    # update next/previous button
+    @UIS.prv_button.prop('disabled', => not @navigation.hasPrevious())
+    @UIS.nxt_button.prop('disabled', => not @navigation.hasNext())
 
 # -----------------------------------------------------------------------------
 #

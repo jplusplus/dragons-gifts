@@ -14,6 +14,7 @@ CIRCLE_STROKE      = $CIRCLE_COLOR.darken(70%)
 
 body:
   background-color:grey
+  overflow: hidden
 
 .container_style:
   margin-top     : 10px
@@ -43,6 +44,7 @@ body:
     padding-left : 10px
     padding-top  : 5px
   .description:
+    overflow     : auto
     padding-left : 10px
     padding-top  : 5px
   .but:
@@ -50,6 +52,8 @@ body:
 
   #prv_button:
     width: 104px
+  .navigation-buttons:
+    margin:20px
 
 .africa-container:
   .all-path:

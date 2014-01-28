@@ -7,9 +7,12 @@
 # License : GNU Lesser General Public License
 # -----------------------------------------------------------------------------
 # Creation : 16-Jan-2014
-# Last mod : 27-Jan-2014
+# Last mod : 28-Jan-2014
 # -----------------------------------------------------------------------------
 
+MODE_INTRO          = 0
+MODE_TOUR           = 1
+MODE_OVERVIEW_START = 2
 
 # -----------------------------------------------------------------------------
 #
@@ -25,9 +28,10 @@ class Navigation
 
   constructor: ->
     @projects        = undefined
-    @current_project = 0
+    @mode            = MODE_INTRO
+    @current_project = undefined
 
-    @UIS =
+    @uis =
       page : $(".container:first")
 
     # Bind events
@@ -44,7 +48,13 @@ class Navigation
     @projects = tour
     @map      = new AfricaMap(this, @geojson.features, @projects)
     @panel    = new Panel(this)
-    @setProject(@current_project)
+
+  setMode: (mode) =>
+    @mode = mode
+    # set a project if the tour mode is selected
+    if @mode == MODE_TOUR then @setProject(0) else @setProject(null)
+    # trigger an event for the others widgets
+    $(document).trigger("modeChanged", @mode)
 
   setProject: (project) =>
     """
@@ -52,18 +62,23 @@ class Navigation
     it will trigger an projectSelected event that all the other widget
     are able to bind.
     """
-    if typeof(project) is "number"
-      project = @projects[project]
-    @current_project = @projects.indexOf(project)
-    $(document).trigger("projectSelected", project)
+    # we need an interger as @current_project
+    if typeof(project) is "object"
+      project = @projects.indexOf(project)
+    @current_project = project
+    $(document).trigger("projectSelected", @projects[@current_project] or null)
 
   nextProject: =>
     if @hasNext()
       @setProject(@projects[@current_project + 1])
+    else
+      @setMode(MODE_OVERVIEW_START)
 
   previousProject: =>
     if @hasPrevious()
       @setProject(@projects[@current_project - 1])
+    else
+      @setMode(MODE_INTRO)
 
   hasNext    : => @current_project < @projects.length - 1
   hasPrevious: => @current_project > 0
@@ -79,20 +94,28 @@ class Panel
 
     @navigation = navigation
 
-    @UIS =
-      text_container : $(".Panel .single_project")
+    @uis =
+      views          : $(".Panel .view")
+      intro          : $(".Panel .view.intro_main")
+      single_project : $(".Panel .view.single_project")
+      start_overview : $(".Panel .view.start_overview")
       navigation_btn : $(".Panel .navigation-buttons")
-      prv_button     : $(".Panel #prv_button")
-      nxt_button     : $(".Panel #nxt_button")
-      title          : $(".Panel .title")
-      location       : $(".Panel .location")
+      prv_button     : $(".Panel .prv_button")
+      nxt_button     : $(".Panel .nxt_button")
+      tour_button    : $(".Panel .tour_button")
+      overview_button: $(".Panel .overview_button")
+      title          : $(".Panel .single_project .title")
+      location       : $(".Panel .single_project .location")
       description    : $(".Panel .single_project .description")
 
     # Bind events
-    $(document).on("projectSelected", @onProjectSelected)
     $(window).resize(@relayout)
-    @UIS.prv_button.on 'click', @navigation.previousProject
-    @UIS.nxt_button.on 'click', @navigation.nextProject
+    $(document).on("projectSelected", @onProjectSelected)
+    $(document).on("modeChanged"    , @onModeChanged)
+    @uis.prv_button     .on 'click',    @navigation.previousProject
+    @uis.nxt_button     .on 'click',    @navigation.nextProject
+    @uis.tour_button    .on 'click', => @navigation.setMode(MODE_TOUR)
+    @uis.overview_button.on 'click', => @navigation.setMode(MODE_OVERVIEW_START)
 
     # resize
     @relayout()
@@ -100,16 +123,21 @@ class Panel
   relayout: =>
     # usefull for the scrollbar:
     # set the description height to use the overflow: auto style
-    @UIS.description.css
-      height : $(window).height() - @UIS.description.offset().top - @UIS.navigation_btn.outerHeight(true)
+    description = $($(".Panel .description").get(@navigation.mode)) # select the current description
+    description.css
+      height : $(window).height() - description.offset().top - $(@uis.navigation_btn.get(@navigation.mode)).outerHeight(true)
 
   onProjectSelected: (e, project) =>
-    @UIS.title       .html project.title
-    @UIS.location    .html project.recipient_condensed
-    @UIS.description .html project.description
-    # update next/previous button
-    @UIS.prv_button.prop('disabled', => not @navigation.hasPrevious())
-    @UIS.nxt_button.prop('disabled', => not @navigation.hasNext())
+    if project?
+      @uis.title       .html project.title
+      @uis.location    .html project.recipient_condensed
+      @uis.description .html project.description
+
+  onModeChanged: (e, mode) =>
+    @uis.intro         .toggleClass("hidden", mode != 0)
+    @uis.single_project.toggleClass("hidden", mode != 1)
+    @uis.start_overview.toggleClass("hidden", mode != 2)
+    @relayout()
 
 # -----------------------------------------------------------------------------
 #
@@ -123,9 +151,7 @@ class AfricaMap
     svg_height         : 500
     svg_width          : 500
     scale_range        : [6, 9]
-  #
-  # Contruct class instance
-  #
+
   constructor: (navigation, countries, projects) ->
     @navigation = navigation
     @countries  = countries

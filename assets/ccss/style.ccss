@@ -52,12 +52,14 @@ body:
     width: 104px
 
 .africa-container:
-  fill         : $MAP_COLOR
-  stroke       : $MAP_STROKE_COLOR
-  stroke-width : $MAP_STROKE_WIDTH
+  .all-path:
+    fill         : $MAP_COLOR
+    stroke       : $MAP_STROKE_COLOR
+    stroke-width : $MAP_STROKE_WIDTH
 
   circle:
     fill   : $CIRCLE_COLOR
     stroke : $CIRCLE_STROKE
     &:hover:
-      fill: $CIRCLE_COLOR_HOVER
+      cursor : pointer
+      fill   : $CIRCLE_COLOR_HOVER

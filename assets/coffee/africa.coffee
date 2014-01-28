@@ -24,8 +24,9 @@ class Navigation
 
   CONFIG =
     urls :
-      geojson : "static/data/continent_Africa_subunits.json"
-      tour    : "static/data/tour.json"
+      geojson  : "static/data/continent_Africa_subunits.json"
+      tour     : "static/data/tour.json"
+      overview : "static/data/global_view.json"
 
   constructor: ->
     @projects        = undefined
@@ -43,13 +44,15 @@ class Navigation
     queue()
       .defer(d3.json, CONFIG.urls.geojson)
       .defer(d3.json, CONFIG.urls.tour)
+      .defer(d3.json, CONFIG.urls.overview)
       .await(@loadedDataCallback)
 
-  loadedDataCallback: (error, geojson, tour) =>
+  loadedDataCallback: (error, geojson, tour, overview) =>
     @setMode(MODE_INTRO)
     @geojson  = geojson
     @projects = tour
-    @map      = new AfricaMap(this, @geojson.features, @projects)
+    @overview = overview
+    @map      = new AfricaMap(this, @geojson.features, @projects, @overview)
     @panel    = new Panel(this)
 
   setMode: (mode) =>
@@ -98,7 +101,7 @@ class Navigation
 
   onSwitchRadioChanged: =>
     if @uis.switch_mode_radio.filter(":checked").val() == "overview"
-      @setMode(MODE_START_OVERVIEW)
+      @setMode(MODE_OVERVIEW)
     else
       @setMode(MODE_INTRO)
 
@@ -169,18 +172,21 @@ class Panel
 class AfricaMap
 
   CONFIG =
-    svg_block_selector : ".africa-container"
-    svg_height         : 500
-    svg_width          : 500
-    scale_range        : [6, 9]
+    svg_height          : 500
+    svg_width           : 500
+    scale_range_tour    : [6, 9]
+    scale_range_overview: [4, 15]
+    transition_ease     : "easeOutExpo"
+    transition_duration : 500
 
-  constructor: (navigation, countries, projects) ->
+  constructor: (navigation, countries, projects, overview) ->
     @navigation = navigation
     @countries  = countries
     @projects   = projects
+    @overview   = overview
 
     # Create svg tag
-    @svg = d3.select(CONFIG.svg_block_selector)
+    @svg = d3.select(".africa-container")
       .insert("svg", ":first-child")
       .attr("width", CONFIG.svg_width)
       .attr("height", CONFIG.svg_height)
@@ -199,22 +205,20 @@ class AfricaMap
     @groupPaths = @svg.append("g")
       .attr("class", "all-path")
 
-    @groupPoints = @svg.append("g")
-      .attr("class", "all-points")
+    @groupOverview = @svg.append("g")
+      .attr("class", "all-overview-points")
+
+    @groupProject = @svg.append("g")
+      .attr("class", "all-project-points")
 
     @drawMap()
+    @drawProjectMap()
 
     # Bind events
+    $(document).on("modeChanged"    , @onModeChanged)
     $(document).on("projectSelected", @onProjectSelected)
 
   drawMap: =>
-    that = this
-    # compute scale
-    values = @projects.map((d) -> parseFloat(d.usd_defl))
-    scale  = d3.scale.linear()
-      .domain([Math.min.apply(Math, values), Math.max.apply(Math, values)])
-      .range(CONFIG.scale_range)
-
     # Create every countries
     @groupPaths.selectAll("path")
       .data(@countries)
@@ -222,18 +226,62 @@ class AfricaMap
         .append("path")
         .attr("d", @path)
 
-    @circles = @groupPoints.selectAll("circle")
+  drawProjectMap: =>
+    that = this
+    # compute scale
+    values = @projects.map((d) -> parseFloat(d.usd_defl))
+    scale  = d3.scale.linear()
+      .domain([Math.min.apply(Math, values), Math.max.apply(Math, values)])
+      .range(CONFIG.scale_range_tour)
+
+    #remove previous circles
+    @groupOverview.selectAll("circle").transition()
+      .ease(CONFIG.transition_ease)
+      .duration(CONFIG.transition_duration)
+      .attr("r", 0).remove()
+    @circles = @groupProject.selectAll("circle")
       .data(@projects)
-      .enter()
-        .append("circle")
-          .attr("cx", (d) -> that.projection([d.lon, d.lat])[0])
-          .attr("cy", (d) -> that.projection([d.lon, d.lat])[1])
+    @circles.enter()
+      .append("circle")
+        .attr("cx", (d) -> that.projection([d.lon, d.lat])[0])
+        .attr("cy", (d) -> that.projection([d.lon, d.lat])[1])
+        .on('click', @navigation.setProject)
+        .attr("r" , scale(0))
+        .transition().ease(CONFIG.transition_ease).duration(CONFIG.transition_duration)
           .attr("r" , (d) -> scale(parseFloat(d.usd_defl)))
-          .on('click', @navigation.setProject)
 
   onProjectSelected: (e, project) =>
     @circles.each (d, i) ->
       d3.select(this).classed("active", project is d)
+
+  drawOverviewMap: =>
+    that = this
+    # compute scale
+    values = @overview.map((d) -> parseFloat(d.USD))
+    scale  = d3.scale.linear()
+      .domain([Math.min.apply(Math, values), Math.max.apply(Math, values)])
+      .range(CONFIG.scale_range_overview)
+
+    #remove previous circles
+    @groupProject.selectAll("circle").transition()
+      .ease(CONFIG.transition_ease)
+      .duration(CONFIG.transition_duration)
+      .attr("r", 0).remove()
+    @circles = @groupOverview.selectAll("circle")
+      .data(@overview)
+    @circles.enter()
+      .append("circle")
+        .attr("cx", (d) -> that.projection([d.lon, d.lat])[0])
+        .attr("cy", (d) -> that.projection([d.lon, d.lat])[1])
+        .attr("r" , scale(0))
+        .transition().ease(CONFIG.transition_ease).duration(CONFIG.transition_duration)
+        .attr("r" , (d) -> scale(parseFloat(d.USD)))
+
+  onModeChanged: (e, mode) =>
+    if mode == MODE_OVERVIEW
+      @drawOverviewMap()
+    else
+      @drawProjectMap()
 
 # -----------------------------------------------------------------------------
 #

@@ -17,14 +17,23 @@
 #
 # -----------------------------------------------------------------------------
 class Navigation
-  CONFIG=
+
+  CONFIG =
     urls :
-        geojson : "static/data/continent_Africa_subunits.json"
-        tour    : "static/data/tour.json"
+      geojson : "static/data/continent_Africa_subunits.json"
+      tour    : "static/data/tour.json"
 
   constructor: ->
     @projects        = undefined
-    @current_project = undefined
+    @current_project = 0
+
+    @UIS =
+      prv_button : $("#prv_button")
+      nxt_button : $("#nxt_button")
+
+    @UIS.prv_button.on 'click', @previousProject
+    @UIS.nxt_button.on 'click', @nextProject
+
 
   start: =>
     queue()
@@ -35,15 +44,23 @@ class Navigation
   loadedDataCallback: (error, geojson, tour) =>
     @geojson  = geojson
     @projects = tour
-    @map      = new Africa(@)
-    @panel    = new Panel(@)
+    @map      = new Africa(this)
+    @panel    = new Panel(this)
+    @setProject(@current_project)
 
   setProject: (project) =>
+    if typeof(project) is "number"
+      project = @projects[project]
     @panel.setProject(project)
+    @current_project = @projects.indexOf(project)
 
   nextProject: =>
+    if @current_project < @projects.length - 1
+      @setProject(@projects[@current_project + 1])
 
   previousProject: =>
+    if @current_project > 0
+      @setProject(@projects[@current_project - 1])
 
 # -----------------------------------------------------------------------------
 #
@@ -59,9 +76,9 @@ class Panel
       description : $(".Panel .single_project .description")
 
   setProject: (project) =>
-    @UIS.title.html(project.title)
-    @UIS.location.html(project.recipient_condensed)
-    @UIS.description.html(project.description)
+    @UIS.title       .html project.title
+    @UIS.location    .html project.recipient_condensed
+    @UIS.description .html project.description
 
 # -----------------------------------------------------------------------------
 #

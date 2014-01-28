@@ -12,7 +12,7 @@
 
 MODE_INTRO          = 0
 MODE_TOUR           = 1
-MODE_OVERVIEW_START = 2
+MODE_START_OVERVIEW = 2
 
 # -----------------------------------------------------------------------------
 #
@@ -72,7 +72,7 @@ class Navigation
     if @hasNext()
       @setProject(@projects[@current_project + 1])
     else
-      @setMode(MODE_OVERVIEW_START)
+      @setMode(MODE_START_OVERVIEW)
 
   previousProject: =>
     if @hasPrevious()
@@ -115,7 +115,7 @@ class Panel
     @uis.prv_button     .on 'click',    @navigation.previousProject
     @uis.nxt_button     .on 'click',    @navigation.nextProject
     @uis.tour_button    .on 'click', => @navigation.setMode(MODE_TOUR)
-    @uis.overview_button.on 'click', => @navigation.setMode(MODE_OVERVIEW_START)
+    @uis.overview_button.on 'click', => @navigation.setMode(MODE_START_OVERVIEW)
 
     # resize
     @relayout()

@@ -44,15 +44,15 @@ class Navigation
   loadedDataCallback: (error, geojson, tour) =>
     @geojson  = geojson
     @projects = tour
-    @map      = new Africa(this)
+    @map      = new AfricaMap(this, @geojson.features, @projects)
     @panel    = new Panel(this)
     @setProject(@current_project)
 
   setProject: (project) =>
     if typeof(project) is "number"
       project = @projects[project]
-    @panel.setProject(project)
     @current_project = @projects.indexOf(project)
+    $(document).trigger("projectSelected", project)
 
   nextProject: =>
     if @current_project < @projects.length - 1
@@ -75,17 +75,20 @@ class Panel
       location    : $(".Panel .location")
       description : $(".Panel .single_project .description")
 
-  setProject: (project) =>
+    # Bind events
+    $(document).on("projectSelected", @onProjectSelected)
+
+  onProjectSelected: (e, project) =>
     @UIS.title       .html project.title
     @UIS.location    .html project.recipient_condensed
     @UIS.description .html project.description
 
 # -----------------------------------------------------------------------------
 #
-#    AFRICA
+#    AFRICA MAP
 #
 # -----------------------------------------------------------------------------
-class Africa
+class AfricaMap
   # Define default config
   CONFIG =
     svg_block_selector : ".africa-container"
@@ -95,10 +98,10 @@ class Africa
   #
   # Contruct class instance
   #
-  constructor: (navigation) ->
+  constructor: (navigation, countries, projects) ->
     @navigation = navigation
-    @countries  = navigation.geojson.features
-    @projects   = navigation.projects
+    @countries  = countries
+    @projects   = projects
 
     # Create svg tag
     @svg = d3.select(CONFIG.svg_block_selector)
@@ -125,6 +128,9 @@ class Africa
 
     @drawMap()
 
+    # Bind events
+    $(document).on("projectSelected", @onProjectSelected)
+
   drawMap: =>
     that = this
     # compute scale
@@ -132,23 +138,26 @@ class Africa
     scale  = d3.scale.linear()
       .domain([Math.min.apply(Math, values), Math.max.apply(Math, values)])
       .range(CONFIG.scale_range)
+
     # Create every countries
     @groupPaths.selectAll("path")
       .data(@countries)
       .enter()
         .append("path")
         .attr("d", @path)
-    @groupPoints.selectAll("circle")
+
+    @circles = @groupPoints.selectAll("circle")
       .data(@projects)
       .enter()
         .append("circle")
           .attr("cx", (d) -> that.projection([d.lon, d.lat])[0])
           .attr("cy", (d) -> that.projection([d.lon, d.lat])[1])
-          .attr("r",  (d) -> scale(parseFloat(d.usd_defl)))
-          .on('click', @setProject)
+          .attr("r" , (d) -> scale(parseFloat(d.usd_defl)))
+          .on('click', @navigation.setProject)
 
-  setProject: (project) =>
-    @navigation.setProject(project)
+  onProjectSelected: (e, project) =>
+    @circles.each (d, i) ->
+      d3.select(this).classed("active", project is d)
 
 # -----------------------------------------------------------------------------
 #

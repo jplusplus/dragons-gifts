@@ -26,11 +26,11 @@ body:
 
 .Panel:
   .title:
-    padding-left     : 10px
-    color            : white
-    bottom           : 0
-    position         : absolute
-    font-size        : 2em
+    padding-left : 10px
+    color        : white
+    bottom       : 0
+    position     : absolute
+    font-size    : 2em
   #figures:
     padding-top:10px
   .img_container:
@@ -38,13 +38,13 @@ body:
     position         : relative
     height           : 300px
   .location:
-    font-weight      : bold
-    font-size        : 1.3em
-    padding-left     : 10px
-    padding-top      : 5px
+    font-weight  : bold
+    font-size    : 1.3em
+    padding-left : 10px
+    padding-top  : 5px
   .description:
-    padding-left     : 10px
-    padding-top      : 5px
+    padding-left : 10px
+    padding-top  : 5px
   .but:
     margin-top: 10px
 
@@ -60,6 +60,12 @@ body:
   circle:
     fill   : $CIRCLE_COLOR
     stroke : $CIRCLE_STROKE
+    &.active:
+      fill   : #C46868
+      stroke : #C46868.darken(70%)
     &:hover:
       cursor : pointer
       fill   : $CIRCLE_COLOR_HOVER
+      stroke : $CIRCLE_COLOR_HOVER.darken(70%)
+
+// EOF

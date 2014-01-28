@@ -6,7 +6,7 @@ MAP_STROKE_WIDTH   = 1
 
 CIRCLE_COLOR       = #E6E6DC
 CIRCLE_COLOR_HOVER = $CIRCLE_COLOR.darken(70%)
-CIRCLE_STROKE      = $CIRCLE_COLOR.darken(20%)
+CIRCLE_STROKE      = $CIRCLE_COLOR.darken(70%)
 
 
 .col-wrap:

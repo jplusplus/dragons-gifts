@@ -33,7 +33,11 @@ class Navigation
     @current_project = undefined
 
     @uis =
-      page : $(".container:first")
+      page              : $(".container:first")
+      switch_mode_radio : $(".toggle-radio input[name=ab]")
+
+    # bind event
+    @uis.switch_mode_radio.change(@onSwitchRadioChanged)
 
   start: =>
     queue()
@@ -53,6 +57,11 @@ class Navigation
       @mode = mode
       # set a project if the tour mode is selected
       if @mode == MODE_TOUR then @setProject(0) else @setProject(null)
+      # update the mode switcher radio
+      if @mode == MODE_TOUR
+        @uis.switch_mode_radio.prop('checked', false).filter("[value=tour]").prop('checked', true)
+      else if @mode == MODE_OVERVIEW
+        @uis.switch_mode_radio.prop('checked', false).filter("[value=overview]").prop('checked', true)
       # trigger an event for the others widgets
       $(document).trigger("modeChanged", @mode)
 
@@ -86,6 +95,12 @@ class Navigation
 
   hasNext    : => @current_project < @projects.length - 1
   hasPrevious: => @current_project > 0
+
+  onSwitchRadioChanged: =>
+    if @uis.switch_mode_radio.filter(":checked").val() == "overview"
+      @setMode(MODE_START_OVERVIEW)
+    else
+      @setMode(MODE_INTRO)
 
 # -----------------------------------------------------------------------------
 #

@@ -246,9 +246,12 @@ class AfricaMap
         .attr("cx", (d) -> that.projection([d.lon, d.lat])[0])
         .attr("cy", (d) -> that.projection([d.lon, d.lat])[1])
         .on('click', @navigation.setProject)
-        .attr("r" , scale(0))
-        .transition().ease(CONFIG.transition_ease).duration(CONFIG.transition_duration)
-          .attr("r" , (d) -> scale(parseFloat(d.usd_defl)))
+        .attr("r" , 0) # init rayon before transition
+        .transition()
+          .ease(CONFIG.transition_ease)
+          .duration(CONFIG.transition_duration)
+          .delay(CONFIG.transition_duration)
+            .attr("r" , (d) -> scale(parseFloat(d.usd_defl)))
 
   onProjectSelected: (e, project) =>
     @circles.each (d, i) ->
@@ -273,9 +276,12 @@ class AfricaMap
       .append("circle")
         .attr("cx", (d) -> that.projection([d.lon, d.lat])[0])
         .attr("cy", (d) -> that.projection([d.lon, d.lat])[1])
-        .attr("r" , scale(0))
-        .transition().ease(CONFIG.transition_ease).duration(CONFIG.transition_duration)
-        .attr("r" , (d) -> scale(parseFloat(d.USD)))
+        .attr("r" , 0) # init rayon before transition
+        .transition()
+          .ease(CONFIG.transition_ease)
+          .duration(CONFIG.transition_duration)
+          .delay(CONFIG.transition_duration)
+            .attr("r" , (d) -> scale(parseFloat(d.USD)))
 
   onModeChanged: (e, mode) =>
     if mode == MODE_OVERVIEW

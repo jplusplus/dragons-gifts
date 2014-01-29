@@ -2,12 +2,12 @@
 # -----------------------------------------------------------------------------
 # Project : Dragons Gifts
 # -----------------------------------------------------------------------------
-# Author :
+# Author : Edouard Richard                                  <edou4rd@gmail.com>
 # -----------------------------------------------------------------------------
 # License : GNU Lesser General Public License
 # -----------------------------------------------------------------------------
 # Creation : 16-Jan-2014
-# Last mod : 28-Jan-2014
+# Last mod : 29-Jan-2014
 # -----------------------------------------------------------------------------
 
 MODE_INTRO          = 0
@@ -179,13 +179,13 @@ class Panel
 class AfricaMap
 
   CONFIG =
-    svg_height          : 500
-    svg_width           : 500
-    initial_zoom        : 350
-    close_zoom          : 800
-    initial_center      : [15, 0]
-    scale_range_tour    : [6, 9]  # scale for compute the circle radius
-    scale_range_overview: [4, 15] # scale for compute the circle radius
+    svg_height                 : 500
+    svg_width                  : 500
+    initial_zoom               : 350
+    close_zoom                 : 800
+    initial_center             : [15, 0]
+    scale_range_tour           : [6, 9]  # scale for compute the circle radius
+    scale_range_overview       : [4, 15] # scale for compute the circle radius
     transition_map_duration    : 1500
     transition_circle_duration : 500
     transition_circle_ease     : "easeOutExpo"

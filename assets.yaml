@@ -11,6 +11,7 @@ js_all:
   contents:
     - "../assets/js/jquery-mini.js"
     - "../assets/js/d3.js"
+    - "../assets/js/chart.js"
     - "../assets/js/queue.js"
     - "../assets/js/underscore.js"
     - "../assets/js/raf.js"

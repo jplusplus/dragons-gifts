@@ -229,6 +229,7 @@ class AfricaMap
     # Bind events
     $(document).on("modeChanged"    , @onModeChanged)
     $(document).on("projectSelected", @onProjectSelected)
+    $(document).on("overviewSelected", @onOverviewSelected)
 
   drawAfricaMap: =>
     # Create every countries
@@ -275,26 +276,14 @@ class AfricaMap
       .append("circle")
         .on 'click', (d) ->
           that.navigation.setProject(d)
-          $(this).trigger("mouseout") # hide the tooltip
+          # $(this).trigger("mouseout") # hide the tooltip
     # postioning cirlces
     @drawCircles(@project_scale)
     # tooltip
     @circles.each (d) ->
       $(d3.select(this)).qtip
         content: "#{d.title}<br/>#{d.recipient_oecd_name}"
-        show: 'mouseover'
-        hide:
-          when:
-            event: 'mouseout'
-        style:
-          padding: 5
-          tip: 'bottomLeft'
-        position:
-          adjust:
-            x : that.project_scale(d.usd_defl) * 1.75
-          corner:
-            target : 'topRight'
-            tooltip: 'bottomLeft'
+        style  : 'qtip-dark'
 
   onProjectSelected: (e, project) =>
     # select a cirlce
@@ -309,12 +298,16 @@ class AfricaMap
         .transition().duration(CONFIG.transition_map_duration)
         .attr("d", @path)
       @drawCircles(@project_scale, "usd_defl")
+      $(selected).trigger("mouseover")
     else # dezoom
       @projection.center(CONFIG.initial_center).scale(CONFIG.initial_zoom)
       @groupPaths.selectAll("path")
         .transition().duration(CONFIG.transition_map_duration)
         .attr("d", @path)
       @drawCircles(@project_scale)
+
+  onOverviewSelected: (e, overview) =>
+    console.log "onOverviewSelected"
 
   initOverviewCircles: =>
     that = this

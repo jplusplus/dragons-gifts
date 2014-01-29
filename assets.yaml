@@ -9,14 +9,14 @@ css_all:
 js_all: 
   output: gen/scripts.js
   contents:
-    - "../assets/js/jquery172-mini.js"
+    - "../assets/js/jquery-mini.js"
     - "../assets/js/d3.js"
     - "../assets/js/queue.js"
     - "../assets/js/underscore.js"
     - "../assets/js/raf.js"
     - "../assets/js/topojson.js"
     - "../assets/js/bootstrap.min.js"
-    - "../assets/js/jquery.qtip-1.0.0-rc3.min.js"
+    - "../assets/js/jquery.qtip.js"
     - contents:
       - "../assets/coffee/africa.coffee"
       filters: coffeescript

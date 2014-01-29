@@ -224,7 +224,7 @@ class AfricaMap
       .attr("class", "all-project-points")
 
     @drawAfricaMap()
-    @drawProjectCircles()
+    @initProjectCircles()
 
     # Bind events
     $(document).on("modeChanged"    , @onModeChanged)
@@ -238,11 +238,29 @@ class AfricaMap
         .append("path")
         .attr("d", @path)
 
-  drawProjectCircles: =>
+  drawCircles: (scale, radius_field_name="usd_defl", appearing_animatation=true) =>
+    that = this
+    @circles.each (d) ->
+      d3.select(this)
+        .attr("cx", (d) -> that.projection([d.lon, d.lat])[0])
+        .attr("cy", (d) -> that.projection([d.lon, d.lat])[1])
+      if appearing_animatation
+        d3.select(this)
+          .attr("r" , 0) # init rayon before transition
+          .transition()
+            .ease(CONFIG.transition_circle_ease)
+            .duration(CONFIG.transition_circle_duration)
+            .delay(CONFIG.transition_map_duration)
+              .attr("r" , (d) -> scale(parseFloat(d[radius_field_name])))
+      else
+       d3.select(this)
+        .attr("r" , (d) -> scale(parseFloat(d[radius_field_name])))
+
+  initProjectCircles: =>
     that = this
     # compute scale
     values = @projects.map((d) -> parseFloat(d.usd_defl))
-    @scale  = d3.scale.linear()
+    @project_scale  = d3.scale.linear()
       .domain([Math.min.apply(Math, values), Math.max.apply(Math, values)])
       .range(CONFIG.scale_range_tour)
     #remove previous circles
@@ -250,12 +268,30 @@ class AfricaMap
       .ease(CONFIG.transition_circle_ease)
       .duration(CONFIG.transition_circle_duration)
       .attr("r", 0).remove()
+    # create circles
     @circles = @groupProject.selectAll("circle")
       .data(@projects)
     @circles.enter()
       .append("circle")
-        .on('click', @navigation.setProject)
-    @setCirclesPosition()
+        .on 'click', (d) =>
+          @navigation.setProject(d)
+    # postioning cirlces
+    @drawCircles(@project_scale)
+    # tooltip
+    @circles.each (d) ->
+      $(d3.select(this)).qtip
+        content: "#{d.title}<br/>#{d.recipient_oecd_name}"
+        show: 'mouseover'
+        hide: 'mouseout'
+        style:
+          padding: 5
+          tip: 'bottomLeft'
+        position:
+          adjust:
+            x : that.project_scale(d.usd_defl) * 1.75
+          corner:
+            target : 'topRight'
+            tooltip: 'bottomLeft'
 
   onProjectSelected: (e, project) =>
     # select a cirlce
@@ -269,33 +305,15 @@ class AfricaMap
       @groupPaths.selectAll("path")
         .transition().duration(CONFIG.transition_map_duration)
         .attr("d", @path)
-      @setCirclesPosition()
+      @drawCircles(@project_scale, "usd_defl")
     else # dezoom
       @projection.center(CONFIG.initial_center).scale(CONFIG.initial_zoom)
       @groupPaths.selectAll("path")
         .transition().duration(CONFIG.transition_map_duration)
         .attr("d", @path)
-      @setCirclesPosition()
+      @drawCircles(@project_scale)
 
-  setCirclesPosition: (radius_field_name="usd_defl", appearing_animatation=true) =>
-    that = this
-    @circles.each (d) ->
-      d3.select(this)
-        .attr("cx", (d) -> that.projection([d.lon, d.lat])[0])
-        .attr("cy", (d) -> that.projection([d.lon, d.lat])[1])
-      if appearing_animatation
-        d3.select(this)
-          .attr("r" , 0) # init rayon before transition
-          .transition()
-            .ease(CONFIG.transition_circle_ease)
-            .duration(CONFIG.transition_circle_duration)
-            .delay(CONFIG.transition_map_duration)
-              .attr("r" , (d) -> that.scale(parseFloat(d[radius_field_name])))
-      else
-       d3.select(this)
-        .attr("r" , (d) -> that.scale(parseFloat(d[radius_field_name])))
-
-  drawOverviewCircles: =>
+  initOverviewCircles: =>
     that = this
     # compute scale
     values = @overview.map((d) -> parseFloat(d.USD))
@@ -312,13 +330,13 @@ class AfricaMap
       .data(@overview)
     @circles.enter()
       .append("circle")
-    @setCirclesPosition("USD")
+    @drawCircles(scale, "USD")
 
   onModeChanged: (e, mode) =>
     if mode == MODE_OVERVIEW
-      @drawOverviewCircles()
+      @initOverviewCircles()
     else
-      @drawProjectCircles()
+      @initProjectCircles()
 
 # -----------------------------------------------------------------------------
 #

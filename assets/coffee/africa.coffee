@@ -273,8 +273,9 @@ class AfricaMap
       .data(@projects)
     @circles.enter()
       .append("circle")
-        .on 'click', (d) =>
-          @navigation.setProject(d)
+        .on 'click', (d) ->
+          that.navigation.setProject(d)
+          $(this).trigger("mouseout") # hide the tooltip
     # postioning cirlces
     @drawCircles(@project_scale)
     # tooltip
@@ -282,7 +283,9 @@ class AfricaMap
       $(d3.select(this)).qtip
         content: "#{d.title}<br/>#{d.recipient_oecd_name}"
         show: 'mouseover'
-        hide: 'mouseout'
+        hide:
+          when:
+            event: 'mouseout'
         style:
           padding: 5
           tip: 'bottomLeft'

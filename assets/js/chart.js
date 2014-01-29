@@ -30,7 +30,6 @@ d3.csv('../static/data/chart_aiddata.csv', function(d) {
     function(dataset) {
 
         // code to generate chart goes here
-        console.log( d3.entries(dataset[0]) );
 
         dataset = d3.entries(dataset[0]);
 
@@ -41,7 +40,6 @@ d3.csv('../static/data/chart_aiddata.csv', function(d) {
 		var chartRight = w - chartPadding;  
 
 		var barLabels = dataset.map(function(datum){
-			console.log(datum.key);
             return datum.key;
         });
 
@@ -55,7 +53,6 @@ d3.csv('../static/data/chart_aiddata.csv', function(d) {
 
 
 
-        console.log(barLabels);
 
 		// create bars
 		chart.selectAll('rect')  // returns empty selection
@@ -79,7 +76,6 @@ d3.csv('../static/data/chart_aiddata.csv', function(d) {
 				.enter()
 				.append('text')
 				.text(function(d){
-					console.log(d.value);
 				 	return d.value;
 				})
 				// multiple attributes may be passed in as an object

@@ -24,7 +24,7 @@ class Navigation
 
   CONFIG =
     urls :
-      geojson  : "static/data/continent_Africa_subunits.json"
+      geojson  : "static/data/africa.json"
       tour     : "static/data/tour.json"
       overview : "static/data/global_view.json"
 
@@ -49,11 +49,11 @@ class Navigation
 
   loadedDataCallback: (error, geojson, tour, overview) =>
     @setMode(MODE_INTRO)
-    @geojson  = geojson
-    @projects = tour
-    @overview = overview
-    @map      = new AfricaMap(this, @geojson.features, @projects, @overview)
-    @panel    = new Panel(this)
+    @projects    = tour
+    @overview    = overview
+    geo_features = topojson.feature(geojson, geojson.objects.continent_Africa_subunits).features
+    @map         = new AfricaMap(this, geo_features, @projects, @overview)
+    @panel       = new Panel(this)
 
   setMode: (mode) =>
     if @mode != mode
@@ -182,11 +182,13 @@ class AfricaMap
     svg_height          : 500
     svg_width           : 500
     initial_zoom        : 350
+    close_zoom          : 800
     initial_center      : [15, 0]
     scale_range_tour    : [6, 9]  # scale for compute the circle radius
     scale_range_overview: [4, 15] # scale for compute the circle radius
-    transition_ease     : "easeOutExpo"
-    transition_duration : 500
+    transition_map_duration    : 1500
+    transition_circle_duration : 500
+    transition_circle_ease     : "easeOutExpo"
 
   constructor: (navigation, countries, projects, overview) ->
     @navigation = navigation
@@ -210,24 +212,25 @@ class AfricaMap
     @path = d3.geo.path()
       .projection(@projection)
 
+    @group = @svg.append("g")
     # Create the group of path and add graticule
-    @groupPaths = @svg.append("g")
+    @groupPaths = @group.append("g")
       .attr("class", "all-path")
 
-    @groupOverview = @svg.append("g")
+    @groupOverview = @group.append("g")
       .attr("class", "all-overview-points")
 
-    @groupProject = @svg.append("g")
+    @groupProject = @group.append("g")
       .attr("class", "all-project-points")
 
-    @drawMap()
-    @drawProjectMap()
+    @drawAfricaMap()
+    @drawProjectCircles()
 
     # Bind events
     $(document).on("modeChanged"    , @onModeChanged)
     $(document).on("projectSelected", @onProjectSelected)
 
-  drawMap: =>
+  drawAfricaMap: =>
     # Create every countries
     @groupPaths.selectAll("path")
       .data(@countries)
@@ -235,18 +238,17 @@ class AfricaMap
         .append("path")
         .attr("d", @path)
 
-  drawProjectMap: =>
+  drawProjectCircles: =>
     that = this
     # compute scale
     values = @projects.map((d) -> parseFloat(d.usd_defl))
     @scale  = d3.scale.linear()
       .domain([Math.min.apply(Math, values), Math.max.apply(Math, values)])
       .range(CONFIG.scale_range_tour)
-
     #remove previous circles
     @groupOverview.selectAll("circle").transition()
-      .ease(CONFIG.transition_ease)
-      .duration(CONFIG.transition_duration)
+      .ease(CONFIG.transition_circle_ease)
+      .duration(CONFIG.transition_circle_duration)
       .attr("r", 0).remove()
     @circles = @groupProject.selectAll("circle")
       .data(@projects)
@@ -260,37 +262,40 @@ class AfricaMap
     @circles.each (d, i) ->
       d3.select(this).classed("active", project is d)
     # zoom
-    if project?
-      y = project.lat
-      x = project.lon
-      center = [x, y]
-      @projection.center([x,y]).scale(800)
+    selected = @circles.filter((d) -> d is project)
+    if project? # zoom
+      center = [project.lon, project.lat]
+      @projection.center(center).scale(CONFIG.close_zoom)
       @groupPaths.selectAll("path")
-        .transition().duration(1000)
+        .transition().duration(CONFIG.transition_map_duration)
         .attr("d", @path)
-      that = this
       @setCirclesPosition()
-    else
+    else # dezoom
       @projection.center(CONFIG.initial_center).scale(CONFIG.initial_zoom)
       @groupPaths.selectAll("path")
-        .transition().duration(1000)
+        .transition().duration(CONFIG.transition_map_duration)
         .attr("d", @path)
       @setCirclesPosition()
 
-  setCirclesPosition: (radius_field_name="usd_defl") =>
+  setCirclesPosition: (radius_field_name="usd_defl", appearing_animatation=true) =>
     that = this
     @circles.each (d) ->
       d3.select(this)
         .attr("cx", (d) -> that.projection([d.lon, d.lat])[0])
         .attr("cy", (d) -> that.projection([d.lon, d.lat])[1])
-         .attr("r" , 0) # init rayon before transition
-        .transition()
-          .ease(CONFIG.transition_ease)
-          .duration(CONFIG.transition_duration)
-          .delay(CONFIG.transition_duration)
-            .attr("r" , (d) -> that.scale(parseFloat(d[radius_field_name])))
+      if appearing_animatation
+        d3.select(this)
+          .attr("r" , 0) # init rayon before transition
+          .transition()
+            .ease(CONFIG.transition_circle_ease)
+            .duration(CONFIG.transition_circle_duration)
+            .delay(CONFIG.transition_map_duration)
+              .attr("r" , (d) -> that.scale(parseFloat(d[radius_field_name])))
+      else
+       d3.select(this)
+        .attr("r" , (d) -> that.scale(parseFloat(d[radius_field_name])))
 
-  drawOverviewMap: =>
+  drawOverviewCircles: =>
     that = this
     # compute scale
     values = @overview.map((d) -> parseFloat(d.USD))
@@ -300,8 +305,8 @@ class AfricaMap
 
     #remove previous circles
     @groupProject.selectAll("circle").transition()
-      .ease(CONFIG.transition_ease)
-      .duration(CONFIG.transition_duration)
+      .ease(CONFIG.transition_circle_ease)
+      .duration(CONFIG.transition_circle_duration)
       .attr("r", 0).remove()
     @circles = @groupOverview.selectAll("circle")
       .data(@overview)
@@ -311,9 +316,9 @@ class AfricaMap
 
   onModeChanged: (e, mode) =>
     if mode == MODE_OVERVIEW
-      @drawOverviewMap()
+      @drawOverviewCircles()
     else
-      @drawProjectMap()
+      @drawProjectCircles()
 
 # -----------------------------------------------------------------------------
 #

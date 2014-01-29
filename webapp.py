@@ -44,6 +44,6 @@ def index():
 # -----------------------------------------------------------------------------
 if __name__ == '__main__':
 	# run application
-	app.run(extra_files=("assets.yaml",))
+	app.run(host="0.0.0.0", extra_files=("assets.yaml",))
 
 # EOF

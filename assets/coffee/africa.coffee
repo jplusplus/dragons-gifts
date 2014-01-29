@@ -181,8 +181,10 @@ class AfricaMap
   CONFIG =
     svg_height          : 500
     svg_width           : 500
-    scale_range_tour    : [6, 9]
-    scale_range_overview: [4, 15]
+    initial_zoom        : 350
+    initial_center      : [15, 0]
+    scale_range_tour    : [6, 9]  # scale for compute the circle radius
+    scale_range_overview: [4, 15] # scale for compute the circle radius
     transition_ease     : "easeOutExpo"
     transition_duration : 500
 
@@ -200,10 +202,9 @@ class AfricaMap
 
     # Create projection
     @projection = d3.geo.mercator()
-      .center([0, 5])
-      .scale(350)
-      # .translate([CONFIG.svg_width/2, CONFIG.svg_height/2])
-      .rotate([-55,5])
+      .center(CONFIG.initial_center)
+      .scale(CONFIG.initial_zoom)
+      .translate([CONFIG.svg_width/2, CONFIG.svg_height/2])
 
     # Create the Africa path
     @path = d3.geo.path()
@@ -238,7 +239,7 @@ class AfricaMap
     that = this
     # compute scale
     values = @projects.map((d) -> parseFloat(d.usd_defl))
-    scale  = d3.scale.linear()
+    @scale  = d3.scale.linear()
       .domain([Math.min.apply(Math, values), Math.max.apply(Math, values)])
       .range(CONFIG.scale_range_tour)
 
@@ -251,25 +252,43 @@ class AfricaMap
       .data(@projects)
     @circles.enter()
       .append("circle")
-        .attr("cx", (d) -> that.projection([d.lon, d.lat])[0])
-        .attr("cy", (d) -> that.projection([d.lon, d.lat])[1])
         .on('click', @navigation.setProject)
-        .attr("r" , 0) # init rayon before transition
-        .transition()
-          .ease(CONFIG.transition_ease)
-          .duration(CONFIG.transition_duration)
-          .delay(CONFIG.transition_duration)
-            .attr("r" , (d) -> scale(parseFloat(d.usd_defl)))
+    @setCirclesPosition()
 
   onProjectSelected: (e, project) =>
     # select a cirlce
     @circles.each (d, i) ->
       d3.select(this).classed("active", project is d)
     # zoom
-    # @groupPaths.transition()
-    #   .duration(500)
-    #   .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
-    #   # .style("stroke-width", 1.5 / k + "px")
+    if project?
+      y = project.lat
+      x = project.lon
+      center = [x, y]
+      @projection.center([x,y]).scale(800)
+      @groupPaths.selectAll("path")
+        .transition().duration(1000)
+        .attr("d", @path)
+      that = this
+      @setCirclesPosition()
+    else
+      @projection.center(CONFIG.initial_center).scale(CONFIG.initial_zoom)
+      @groupPaths.selectAll("path")
+        .transition().duration(1000)
+        .attr("d", @path)
+      @setCirclesPosition()
+
+  setCirclesPosition: (radius_field_name="usd_defl") =>
+    that = this
+    @circles.each (d) ->
+      d3.select(this)
+        .attr("cx", (d) -> that.projection([d.lon, d.lat])[0])
+        .attr("cy", (d) -> that.projection([d.lon, d.lat])[1])
+         .attr("r" , 0) # init rayon before transition
+        .transition()
+          .ease(CONFIG.transition_ease)
+          .duration(CONFIG.transition_duration)
+          .delay(CONFIG.transition_duration)
+            .attr("r" , (d) -> that.scale(parseFloat(d[radius_field_name])))
 
   drawOverviewMap: =>
     that = this
@@ -288,14 +307,7 @@ class AfricaMap
       .data(@overview)
     @circles.enter()
       .append("circle")
-        .attr("cx", (d) -> that.projection([d.lon, d.lat])[0])
-        .attr("cy", (d) -> that.projection([d.lon, d.lat])[1])
-        .attr("r" , 0) # init rayon before transition
-        .transition()
-          .ease(CONFIG.transition_ease)
-          .duration(CONFIG.transition_duration)
-          .delay(CONFIG.transition_duration)
-            .attr("r" , (d) -> scale(parseFloat(d.USD)))
+    @setCirclesPosition("USD")
 
   onModeChanged: (e, mode) =>
     if mode == MODE_OVERVIEW

@@ -59,7 +59,13 @@ class Navigation
     if @mode != mode
       @mode = mode
       # set a project if the tour mode is selected
-      if @mode == MODE_TOUR then @setProject(0) else @setProject(null)
+      if @mode == MODE_TOUR
+        if @current_project?
+          @setProject(@current_project)
+        else
+          @setProject(0)
+      else
+        @setProject(null)
       # update the mode switcher radio
       if @mode == MODE_TOUR
         @uis.switch_mode_radio.prop('checked', false).filter("[value=tour]").prop('checked', true)
@@ -74,15 +80,16 @@ class Navigation
     it will trigger an projectSelected event that all the other widget
     are able to bind.
     """
-    # ensure the mode
-    @setMode(MODE_TOUR) unless not project?
     # we need an interger as @current_project
     if project? and typeof(project) is "object"
       project = @projects.indexOf(project)
-    # save the state of the selected project
-    @current_project = project
-    # trigger a projectSelected with the selected project or null if no project is selected
-    $(document).trigger("projectSelected", if @current_project? then @projects[@current_project] else null)
+    if project != @current_project
+      # save the state of the selected project
+      @current_project = project
+      # ensure the mode
+      @setMode(MODE_TOUR) unless not project?
+      # trigger a projectSelected with the selected project or null if no project is selected
+      $(document).trigger("projectSelected", if @current_project? then @projects[@current_project] else null)
 
   nextProject: =>
     if @hasNext()
@@ -195,6 +202,7 @@ class AfricaMap
     @projection = d3.geo.mercator()
       .center([0, 5])
       .scale(350)
+      # .translate([CONFIG.svg_width/2, CONFIG.svg_height/2])
       .rotate([-55,5])
 
     # Create the Africa path
@@ -254,8 +262,14 @@ class AfricaMap
             .attr("r" , (d) -> scale(parseFloat(d.usd_defl)))
 
   onProjectSelected: (e, project) =>
+    # select a cirlce
     @circles.each (d, i) ->
       d3.select(this).classed("active", project is d)
+    # zoom
+    # @groupPaths.transition()
+    #   .duration(500)
+    #   .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
+    #   # .style("stroke-width", 1.5 / k + "px")
 
   drawOverviewMap: =>
     that = this

@@ -67,6 +67,9 @@ body:
     &.active:
       fill   : #C46868
       stroke : #C46868.darken(70%)
+      &:hover:
+        fill : #C46868.darken(70%)
+      stroke : #C46868.darken(70%).darken(70%)
     &:hover:
       cursor : pointer
       fill   : $CIRCLE_COLOR_HOVER

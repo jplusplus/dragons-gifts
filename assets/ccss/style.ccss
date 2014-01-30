@@ -14,7 +14,7 @@ CIRCLE_STROKE      = $CIRCLE_COLOR.darken(70%)
 
 body:
   background-color:grey
-  overflow: hidden
+  //overflow: hidden
 
 .container_style:
   margin-top     : 10px

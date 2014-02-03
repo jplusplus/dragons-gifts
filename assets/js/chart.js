@@ -38,7 +38,7 @@ d3.csv('../static/data/chart_aiddata.csv', function(d) {
 		var chartPadding = 70;
 		var chartTop= 60;
 		var chartBottom = h - chartPadding;  
-		var chartRight = w;  
+		var chartRight = w - 5;  
 
 		var barLabels = dataset.map(function(datum){
             return datum.key;

@@ -206,7 +206,7 @@ class AfricaMap
     @projection = d3.geo.mercator()
       .center(CONFIG.initial_center)
       .scale(CONFIG.initial_zoom)
-      .translate([CONFIG.svg_width/2, CONFIG.svg_height/2])
+      .translate([CONFIG.svg_width/2 - 40, CONFIG.svg_height/2])
 
     # Create the Africa path
     @path = d3.geo.path()

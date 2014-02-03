@@ -16,6 +16,12 @@ body:
   background-color:grey
   //overflow: hidden
 
+testo_tabella:
+  font-size: 11px
+
+#prj_cat_text:
+  margin-left: 50px
+
 .axis path, .axis line:
   fill: none
   stroke: black
@@ -51,7 +57,7 @@ body:
   #figures:
     padding-top:10px
   .img_container:
-    background-image : url('/static/images/1.jpg')
+    background-image : url('/static/images/hq.jpg')
     position         : relative
     height           : 300px
   .location:

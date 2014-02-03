@@ -1,5 +1,5 @@
 // define dimensions of svg
-var h = 300,
+var h = 220,
 	w = 300;
 
 // create svg element
@@ -13,14 +13,14 @@ d3.csv('../static/data/chart_aiddata.csv', function(d) {
         
 		if (d.country == "Ghana") {
 	        return {
-		            transport: +d.transport,
-					agriculture: +d.agriculture,
-					education: +d.education,
-					energy: +d.energy,
-					govt: +d.govt,
-					health: +d.health,
-		            other: +d.other,
-		            industry: +d.industry
+		            "Transport/Comm.": +d.transport,
+					"Agriculture/Water": +d.agriculture,
+					"Education/Culture": +d.education,
+					"Energy": +d.energy,
+					"Government": +d.govt,
+					"Health/Emerg.": +d.health,
+		            "Other": +d.other,
+		            "Mining/Industry": +d.industry
 		            //total: +d.total
 		        }
         };
@@ -35,9 +35,10 @@ d3.csv('../static/data/chart_aiddata.csv', function(d) {
 
 		var barwidth = w / 8;
 		var spacing = 1;
-		var chartPadding = 50;
+		var chartPadding = 70;
+		var chartTop= 60;
 		var chartBottom = h - chartPadding;  
-		var chartRight = w - chartPadding;  
+		var chartRight = w;  
 
 		var barLabels = dataset.map(function(datum){
             return datum.key;
@@ -47,7 +48,7 @@ d3.csv('../static/data/chart_aiddata.csv', function(d) {
 
         var yScale = d3.scale.linear()
         	.domain([0,max])
-        	.range([chartBottom,chartPadding])
+        	.range([chartBottom,chartPadding-chartTop])
         	.nice();
 
 		var xScale = d3.scale.ordinal()
@@ -75,14 +76,14 @@ d3.csv('../static/data/chart_aiddata.csv', function(d) {
 		     .enter()            // binds data to placeholders
 		     .append('rect')     // creates a rect svg element for every datum
 		     .attr('x',function(d) {
-                 	return xScale(d.key);    // bar
+                 return xScale(d.key);    // bar
 		      })
 		     .attr('y',function(d){
                  return yScale(d.value); // position of the top of each bar
 		      })
 		     .attr('width', xScale.rangeBand())
 		     .attr('height',function(d){
-		        return chartBottom - yScale(d.value);
+		         return chartBottom - yScale(d.value);
 		      })
 		     .attr('fill','red')
 		          // attach event listener to each bar for mouseover
@@ -127,12 +128,7 @@ d3.csv('../static/data/chart_aiddata.csv', function(d) {
 				// multiple attributes may be passed in as an object
 				.attr({
 					'x': function(d){ return xScale(d.key) + xScale.rangeBand() / 2},
-					'y': function(d){ return h - yScale(d.value) },
-					'font-family': 'sans-serif',
-					'font-size': '13px',
-					'font-weight': 'bold',
-					'fill': 'black',
-					'text-anchor': 'middle'
+					'y': function(d){ return h - yScale(d.value) }
 				});
 
 		// after chart code, set up group element for axis

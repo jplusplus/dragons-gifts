@@ -45,11 +45,26 @@ d3.csv('../static/data/chart_aiddata.csv', function(d) {
 
         var max = Math.max.apply(Math, dataset.map( function (datum) {return datum.value; } ));
 
-        var yScale = d3.scale.linear().domain([0,max]).range([chartPadding,chartBottom]);
+        var yScale = d3.scale.linear()
+        	.domain([0,max])
+        	.range([chartBottom,chartPadding])
+        	.nice();
 
 		var xScale = d3.scale.ordinal()
                      .domain( barLabels )
                      .rangeRoundBands([chartPadding,chartRight], 0.1);
+
+
+		var yAxis = d3.svg.axis()
+		                  .scale(yScale)
+		                  .orient('left');
+
+
+		var xAxis = d3.svg.axis()
+		                  .scale(xScale)
+		                  .orient('bottom')
+		                  .tickSize(0);
+
 
 
 
@@ -63,21 +78,52 @@ d3.csv('../static/data/chart_aiddata.csv', function(d) {
                  	return xScale(d.key);    // bar
 		      })
 		     .attr('y',function(d){
-                 return h - yScale(d.value); // position of the top of each bar
+                 return yScale(d.value); // position of the top of each bar
 		      })
 		     .attr('width', xScale.rangeBand())
 		     .attr('height',function(d){
-		        return yScale(d.value) - chartPadding;
+		        return chartBottom - yScale(d.value);
 		      })
-		     .attr('fill','red');
+		     .attr('fill','red')
+		          // attach event listener to each bar for mouseover
+			 .on('mouseover',function(d){
+			      d3.select(this)
+			        .transition()  // adds a "smoothing" animation to the transition
+      				.duration(200) // set the duration of the transition in ms (default: 250)
+			        .attr('fill','darkred');
+			        showValue(d);
+			 })
+			 .on('mouseout',function(d){
+			    d3.select(this)
+			      .transition()  // adds a "smoothing" animation to the transition
+      			  .duration(200) // set the duration of the transition in ms (default: 250)
+			      .attr('fill','red');
+			      hideValue();
+			 });
+
+
+			var showValue = function(d) {
+				console.log((xScale.rangeBand() / 2));
+				chart.append('text')
+			 		.text(d.value)
+			 		.attr({
+			     	'x': xScale(d.key) + (xScale.rangeBand() / 2),
+			     	'y': yScale(d.value) + 15,
+			     	'class': 'value_bar'
+			 	});
+			}
+
+			var hideValue = function() {
+				chart.select('text.value_bar').remove();
+			}
 
 		chart.selectAll('text')
 				.data(dataset)
 				.enter()
 				.append('text')
-				.text(function(d){
-				 	return d.value;
-				})
+				//.text(function(d){
+				// 	return d.value;
+				//})
 				// multiple attributes may be passed in as an object
 				.attr({
 					'x': function(d){ return xScale(d.key) + xScale.rangeBand() / 2},
@@ -88,5 +134,25 @@ d3.csv('../static/data/chart_aiddata.csv', function(d) {
 					'fill': 'black',
 					'text-anchor': 'middle'
 				});
+
+		// after chart code, set up group element for axis
+		// use transformation to adjust position of axis
+		y_axis = chart.append('g')
+		            .attr('class','axis')
+		            .attr('transform','translate(' + chartPadding + ',0)');
+
+		// generate y Axis within group using yAxis function
+		yAxis(y_axis);
+
+		chart.append('g')
+		     .attr('class', 'axis xAxis')
+		     .attr('transform','translate(0,' + chartBottom + ')')  // push to bottom
+		     .call(xAxis);
+
+		chart.selectAll('.xAxis')
+		     .selectAll('text')
+        	 .style('text-anchor','end')
+        	 .attr('transform','rotate(-45)');
+		  
 	}
 );

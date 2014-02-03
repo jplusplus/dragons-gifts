@@ -16,6 +16,22 @@ body:
   background-color:grey
   //overflow: hidden
 
+.axis path, .axis line:
+  fill: none
+  stroke: black
+  shape-rendering: crispEdges
+
+.axis text:
+  font-family: sans-serif
+  font-size: 11px
+
+.value_bar:
+  font-family: sans-serif
+  font-size: 13px
+  font-weight: bold
+  fill: white
+  text-anchor: middle
+
 .container_style:
   margin-top     : 10px
   padding-bottom : 10px

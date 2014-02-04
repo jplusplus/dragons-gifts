@@ -21,20 +21,28 @@ class Panel
     @navigation = navigation
 
     @uis =
-      views          : $(".Panel .view")
-      intro          : $(".Panel .view.intro_main")
-      single_project : $(".Panel .view.single_project")
-      start_overview : $(".Panel .view.start_overview")
-      overview_intro : $(".Panel .view.overview_intro")
-      overview       : $(".Panel .view.overview")
+      all_views: $(".Panel .view")
+      views:
+        intro          : $(".Panel .view.intro_main")
+        single_project : $(".Panel .view.single_project")
+        start_overview : $(".Panel .view.start_overview")
+        overview_intro : $(".Panel .view.overview_intro")
+        overview       : $(".Panel .view.overview")
       navigation_btn : $(".Panel .navigation-buttons")
       prv_button     : $(".Panel .prv_button")
       nxt_button     : $(".Panel .nxt_button")
       tour_button    : $(".Panel .tour_button")
       overview_button: $(".Panel .overview_button")
-      title          : $(".Panel .single_project .title")
-      location       : $(".Panel .single_project .location")
-      description    : $(".Panel .single_project .description")
+      # single project (TOUR MODE)
+      project:
+        title      : $(".Panel .single_project .title")
+        location   : $(".Panel .single_project .location")
+        description: $(".Panel .single_project .description")
+      # country infos (OVERVIEW_MODE)
+      overview:
+        location    : $(".Panel .overview .location")
+        amount      : $(".Panel .overview #tot_usd")
+        nb_projects : $(".Panel .overview #tot_prj")
 
     # Bind events
     $(window)           .resize                    @relayout
@@ -59,20 +67,24 @@ class Panel
 
   onProjectSelected: (e, project) =>
     if project?
-      @uis.title       .html project.title
-      @uis.location    .html project.recipient_condensed
-      @uis.description .html project.description
+      @uis.project.title       .html project.title
+      @uis.project.location    .html project.recipient_condensed
+      @uis.project.description .html project.description
 
   onOverviewSelected: (e, country) =>
-
+    if country?
+      @uis.overview.location    .html country.Country
+      @uis.overview.amount      .html country.USD
+      # @uis.overview.nb_projects .html country.
 
   onModeChanged: (e, mode) =>
-    @uis.views.addClass "hidden"
-    @uis.intro         .removeClass("hidden") if mode == MODE_INTRO
-    @uis.single_project.removeClass("hidden") if mode == MODE_TOUR
-    @uis.start_overview.removeClass("hidden") if mode == MODE_START_OVERVIEW
-    @uis.overview_intro.removeClass("hidden") if mode == MODE_OVERVIEW_INTRO
-    @uis.overview      .removeClass("hidden") if mode == MODE_OVERVIEW
+    ### hide all the views, show the wanted one ###
+    @uis.all_views.addClass "hidden"
+    @uis.views.intro         .removeClass("hidden") if mode == MODE_INTRO
+    @uis.views.single_project.removeClass("hidden") if mode == MODE_TOUR
+    @uis.views.start_overview.removeClass("hidden") if mode == MODE_START_OVERVIEW
+    @uis.views.overview_intro.removeClass("hidden") if mode == MODE_OVERVIEW_INTRO
+    @uis.views.overview      .removeClass("hidden") if mode == MODE_OVERVIEW
     @relayout() # resize because the view has changed
 
 # EOF

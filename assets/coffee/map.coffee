@@ -50,18 +50,14 @@ class AfricaMap
     # Create the Africa path
     @path = d3.geo.path()
       .projection(@projection)
-
     @group = @svg.append("g")
-    # Create the group of path and add graticule
+    # Create the group of path
     @groupPaths = @group.append("g")
       .attr("class", "all-path")
-
     @groupOverview = @group.append("g")
       .attr("class", "all-overview-points")
-
     @groupProject = @group.append("g")
       .attr("class", "all-project-points")
-
     @drawMap()
     @drawProjectCircles()
 

@@ -19,7 +19,7 @@ js_all:
     - "../assets/js/bootstrap.min.js"
     - "../assets/js/jquery.qtip.js"
     - contents:
-      - "../assets/coffee/africa.coffee"
+      - "../assets/coffee/map.coffee"
       - "../assets/coffee/panel.coffee"
       - "../assets/coffee/navigation.coffee"
       filters: coffeescript

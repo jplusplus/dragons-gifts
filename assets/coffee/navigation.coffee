@@ -83,7 +83,7 @@ class Navigation
     # we need an interger as @current_project
     if project? and typeof(project) is "object"
       project = @projects.indexOf(project)
-    if project != @current_project
+    if project != @current_project # if a new project is selected
       # save the state of the selected project
       @current_project = project
       # ensure the mode

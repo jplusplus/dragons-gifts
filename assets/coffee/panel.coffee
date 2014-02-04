@@ -36,13 +36,13 @@ class Panel
       description    : $(".Panel .single_project .description")
 
     # Bind events
-    $(window).resize(@relayout)
-    $(document).on("projectSelected", @onProjectSelected)
-    $(document).on("modeChanged"    , @onModeChanged)
-    @uis.prv_button     .on 'click',    @navigation.previousProject
-    @uis.nxt_button     .on 'click',    @navigation.nextProject
-    @uis.tour_button    .on 'click', => @navigation.setMode(MODE_TOUR)
-    @uis.overview_button.on 'click', => @navigation.setMode(MODE_OVERVIEW)
+    $(window)           .resize                   @relayout
+    $(document)         .on 'projectSelected',    @onProjectSelected
+    $(document)         .on 'modeChanged'    ,    @onModeChanged
+    @uis.prv_button     .on 'click'          ,    @navigation.previousProject
+    @uis.nxt_button     .on 'click'          ,    @navigation.nextProject
+    @uis.tour_button    .on 'click'          , => @navigation.setMode(MODE_TOUR)
+    @uis.overview_button.on 'click'          , => @navigation.setMode(MODE_OVERVIEW)
 
     # resize
     @relayout()

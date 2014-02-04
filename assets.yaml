@@ -20,4 +20,6 @@ js_all:
     - "../assets/js/jquery.qtip.js"
     - contents:
       - "../assets/coffee/africa.coffee"
+      - "../assets/coffee/panel.coffee"
+      - "../assets/coffee/navigation.coffee"
       filters: coffeescript

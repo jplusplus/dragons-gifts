@@ -3,23 +3,10 @@
 		<div class="img_container">
 			<div class="title">Dragon's gifts</div>
 		</div>
-		<!-- Single country data view -->
-		<div class="">
-		<div class="location">Angola</div>
-			<table class="table" id="figures">
-				<tr>
-					<td><span>$USD</span><br><span id="tot_usd">23B</span></td>
-					<td rowspan="2"><span id="prj_cat_text">Project categories:</span><span id="single_country_chart"></span></td>
-				</tr>
-				<tr>
-					<td><span>Projects</span><br><span id="tot_prj">200</span></td>
-				</tr>
-
-			</table>
-		</div>
 
 	<!-- view: Introduction text for main page before starting the tour -->
-	<div class="hidden view intro_main">
+
+	<div class="view intro_main">
 		<div class="description ">From dams to highroads, from the African Union HQ to Confucius Institutes, the Chinese interests in Africa take shape in several forms. Make a tour across the continent and have a look at the Chinese projects in Africa, or explore the data about Chinese aid flows into Africa.</div>
 
 		<div class="text-center navigation-buttons">
@@ -52,6 +39,23 @@
 	<!-- view: overview -->
 	<div class="view hidden overview">
 		<div class="location ">Location</div>
-		<div class="description">Pouet</div>
+		<table class="table" id="figures">
+			<tr>
+				<td>
+					<div>$USD</div>
+					<div class="value" id="tot_usd">23B</div>
+				</td>
+				<td rowspan="2">
+					<div id="prj_cat_text">Project categories:</div>
+					<div class="chart"></div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div>Projects</div>
+					<div class="value" id="tot_prj">200</div>
+				</td>
+			</tr>
+		</table>
 	</div>
 </div>

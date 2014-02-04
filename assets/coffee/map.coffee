@@ -61,7 +61,7 @@ class AfricaMap
     @groupProject = @group.append("g")
       .attr("class", "all-project-points")
 
-    @drawAfricaMap()
+    @drawMap()
     @initProjectCircles()
 
     # Bind events
@@ -69,7 +69,7 @@ class AfricaMap
     $(document).on("projectSelected", @onProjectSelected)
     $(document).on("overviewSelected", @onOverviewSelected)
 
-  drawAfricaMap: =>
+  drawMap: =>
     # Create every countries
     @groupPaths.selectAll("path")
       .data(@countries)

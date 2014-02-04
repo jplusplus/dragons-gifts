@@ -25,6 +25,7 @@ class Panel
       intro          : $(".Panel .view.intro_main")
       single_project : $(".Panel .view.single_project")
       start_overview : $(".Panel .view.start_overview")
+      overview_intro : $(".Panel .view.overview_intro")
       overview       : $(".Panel .view.overview")
       navigation_btn : $(".Panel .navigation-buttons")
       prv_button     : $(".Panel .prv_button")
@@ -43,7 +44,7 @@ class Panel
     @uis.prv_button     .on 'click'           ,    @navigation.previousProject
     @uis.nxt_button     .on 'click'           ,    @navigation.nextProject
     @uis.tour_button    .on 'click'           , => @navigation.setMode(MODE_TOUR)
-    @uis.overview_button.on 'click'           , => @navigation.setMode(MODE_OVERVIEW)
+    @uis.overview_button.on 'click'           , => @navigation.setMode(MODE_OVERVIEW_INTRO)
 
     # resize
     @relayout()
@@ -62,11 +63,16 @@ class Panel
       @uis.location    .html project.recipient_condensed
       @uis.description .html project.description
 
+  onOverviewSelected: (e, country) =>
+
+
   onModeChanged: (e, mode) =>
-    @uis.intro         .toggleClass("hidden", mode != MODE_INTRO)
-    @uis.single_project.toggleClass("hidden", mode != MODE_TOUR)
-    @uis.start_overview.toggleClass("hidden", mode != MODE_START_OVERVIEW)
-    @uis.overview      .toggleClass("hidden", mode != MODE_OVERVIEW)
+    @uis.views.addClass "hidden"
+    @uis.intro         .removeClass("hidden") if mode == MODE_INTRO
+    @uis.single_project.removeClass("hidden") if mode == MODE_TOUR
+    @uis.start_overview.removeClass("hidden") if mode == MODE_START_OVERVIEW
+    @uis.overview_intro.removeClass("hidden") if mode == MODE_OVERVIEW_INTRO
+    @uis.overview      .removeClass("hidden") if mode == MODE_OVERVIEW
     @relayout() # resize because the view has changed
 
 # EOF

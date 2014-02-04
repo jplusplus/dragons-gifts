@@ -13,7 +13,8 @@
 MODE_INTRO          = 0
 MODE_TOUR           = 1
 MODE_START_OVERVIEW = 2
-MODE_OVERVIEW       = 3
+MODE_OVERVIEW_INTRO = 3
+MODE_OVERVIEW       = 4
 
 # -----------------------------------------------------------------------------
 #
@@ -69,7 +70,7 @@ class Navigation
       # update the mode switcher radio
       if @mode == MODE_TOUR
         @uis.switch_mode_radio.prop('checked', false).filter("[value=tour]").prop('checked', true)
-      else if @mode == MODE_OVERVIEW
+      else if @mode == MODE_OVERVIEW or @mode == MODE_OVERVIEW_INTRO
         @uis.switch_mode_radio.prop('checked', false).filter("[value=overview]").prop('checked', true)
       # trigger an event for the others widgets
       $(document).trigger("modeChanged", @mode)
@@ -87,7 +88,7 @@ class Navigation
       # save the state of the selected project
       @current_project = project
       # ensure the mode
-      @setMode(MODE_TOUR) unless not project?
+      @setMode(MODE_TOUR) if project?
       # trigger a projectSelected with the selected project or null if no project is selected
       $(document).trigger("projectSelected", if @current_project? then @projects[@current_project] else null)
 
@@ -103,6 +104,8 @@ class Navigation
     if country != @current_overview # if a new country is selected
       # save the state of the selected project
       @current_overview = country
+      # ensure the mode
+      @setMode(MODE_OVERVIEW) if country?
     $(document).trigger("overviewSelected", if @current_overview? then @overview[@current_overview] else null)
 
   nextProject: =>
@@ -122,7 +125,7 @@ class Navigation
 
   onSwitchRadioChanged: =>
     if @uis.switch_mode_radio.filter(":checked").val() == "overview"
-      @setMode(MODE_OVERVIEW)
+      @setMode(MODE_OVERVIEW_INTRO)
     else
       @setMode(MODE_INTRO)
 # EOF

@@ -29,10 +29,11 @@ class AfricaMap
     transition_circle_ease     : "easeOutExpo"
 
   constructor: (navigation, countries, projects, overview) ->
-    @navigation = navigation
-    @countries  = countries
-    @projects   = projects
-    @overview   = overview
+    @navigation   = navigation
+    @countries    = countries
+    @projects     = projects
+    @overview     = overview
+    @current_mode = undefined
 
     # Create svg tag
     @svg = d3.select(".africa-container")
@@ -145,7 +146,9 @@ class AfricaMap
       @drawCircles(@project_scale)
 
   onOverviewSelected: (e, country) =>
-    console.log "MAP: onOverviewSelected", country
+    ### color the circle on the map ###
+    @circles.each (d, i) ->
+      d3.select(this).classed("active", country is d)
 
   drawOverviewCircles: =>
     that = this
@@ -154,7 +157,6 @@ class AfricaMap
     scale  = d3.scale.linear()
       .domain([Math.min.apply(Math, values), Math.max.apply(Math, values)])
       .range(CONFIG.scale_range_overview)
-
     #remove previous circles
     @groupProject.selectAll("circle").transition()
       .ease(CONFIG.transition_circle_ease)
@@ -169,9 +171,12 @@ class AfricaMap
     @drawCircles(scale, "USD")
 
   onModeChanged: (e, mode) =>
-    if mode == MODE_OVERVIEW
-      @drawOverviewCircles()
+    if (mode == MODE_OVERVIEW or mode == MODE_OVERVIEW_INTRO)
+      if @current_mode != "overview"
+        @drawOverviewCircles()
+        @current_mode = "overview"
     else
+      @current_mode = "project"
       @drawProjectCircles()
 
 # EOF

@@ -42,9 +42,8 @@ class Panel
         location    : $(".Panel .overview .location")
         amount      : $(".Panel .overview #tot_usd")
         nb_projects : $(".Panel .overview #tot_prj")
-        chart       : $(".Panel .overview .chart")
 
-    @chartWidget = new Chart(@uis.overview.chart)
+    @chartWidget = new Chart()
 
     # Bind events
     $(window)           .resize                    @relayout

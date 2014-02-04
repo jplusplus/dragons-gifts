@@ -18,6 +18,7 @@
 class Chart
 
   constructor: ->
+    @ui = ".chart"
 
   render: =>
     # define dimensions of svg
@@ -26,7 +27,8 @@ class Chart
 
     # create svg element
     # parent svg element will contain the chart
-    chart = d3.select(".chart").append("svg").attr("width", w).attr("height", h)
+    d3.select(@ui).select("svg").remove()
+    chart = d3.select(@ui).append("svg").attr("width", w).attr("height", h)
 
     # load data from a CSV file
     d3.csv "../static/data/chart_aiddata.csv", ((d) ->

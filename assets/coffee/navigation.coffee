@@ -91,6 +91,9 @@ class Navigation
       # trigger a projectSelected with the selected project or null if no project is selected
       $(document).trigger("projectSelected", if @current_project? then @projects[@current_project] else null)
 
+  setOverview: (country) =>
+    console.log "nav: setOverview", country
+
   nextProject: =>
     if @hasNext()
       @setProject(@projects[@current_project + 1])

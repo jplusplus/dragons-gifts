@@ -62,11 +62,11 @@ class AfricaMap
       .attr("class", "all-project-points")
 
     @drawMap()
-    @initProjectCircles()
+    @drawProjectCircles()
 
     # Bind events
-    $(document).on("modeChanged"    , @onModeChanged)
-    $(document).on("projectSelected", @onProjectSelected)
+    $(document).on("modeChanged"     , @onModeChanged)
+    $(document).on("projectSelected" , @onProjectSelected)
     $(document).on("overviewSelected", @onOverviewSelected)
 
   drawMap: =>
@@ -95,7 +95,7 @@ class AfricaMap
        d3.select(this)
         .attr("r" , (d) -> scale(parseFloat(d[radius_field_name])))
 
-  initProjectCircles: =>
+  drawProjectCircles: =>
     that = this
     # compute scale
     values = @projects.map((d) -> parseFloat(d.usd_defl))
@@ -144,10 +144,10 @@ class AfricaMap
         .attr("d", @path)
       @drawCircles(@project_scale)
 
-  onOverviewSelected: (e, overview) =>
-    console.log "onOverviewSelected"
+  onOverviewSelected: (e, country) =>
+    console.log "MAP: onOverviewSelected", country
 
-  initOverviewCircles: =>
+  drawOverviewCircles: =>
     that = this
     # compute scale
     values = @overview.map((d) -> parseFloat(d.USD))
@@ -168,8 +168,8 @@ class AfricaMap
 
   onModeChanged: (e, mode) =>
     if mode == MODE_OVERVIEW
-      @initOverviewCircles()
+      @drawOverviewCircles()
     else
-      @initProjectCircles()
+      @drawProjectCircles()
 
 # EOF

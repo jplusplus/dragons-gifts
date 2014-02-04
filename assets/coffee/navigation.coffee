@@ -77,7 +77,7 @@ class Navigation
   setProject: (project) =>
     """
     use this function to set a project.
-    it will trigger an projectSelected event that all the other widget
+    it will trigger a projectSelected event that all the other widget
     are able to bind.
     """
     # we need an interger as @current_project
@@ -92,7 +92,18 @@ class Navigation
       $(document).trigger("projectSelected", if @current_project? then @projects[@current_project] else null)
 
   setOverview: (country) =>
-    console.log "nav: setOverview", country
+    """
+    use this function to select a country in the overview mode.
+    it will trigger an overviewSelected event that all the other widget
+    are able to bind.
+    """
+    # we need an interger as @current_overview
+    if country? and typeof(country) is "object"
+      country = @overview.indexOf(country)
+    if country != @current_overview # if a new country is selected
+      # save the state of the selected project
+      @current_overview = country
+    $(document).trigger("overviewSelected", if @current_overview? then @overview[@current_overview] else null)
 
   nextProject: =>
     if @hasNext()

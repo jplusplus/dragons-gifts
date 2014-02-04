@@ -164,6 +164,8 @@ class AfricaMap
       .data(@overview)
     @circles.enter()
       .append("circle")
+        .on 'click', (d) ->
+          that.navigation.setOverview(d)
     @drawCircles(scale, "USD")
 
   onModeChanged: (e, mode) =>

@@ -9,7 +9,6 @@
 # Creation : 16-Jan-2014
 # Last mod : 04-Feb-2014
 # -----------------------------------------------------------------------------
-# -----------------------------------------------------------------------------
 #
 #    PANEL
 #
@@ -43,6 +42,9 @@ class Panel
         location    : $(".Panel .overview .location")
         amount      : $(".Panel .overview #tot_usd")
         nb_projects : $(".Panel .overview #tot_prj")
+        chart       : $(".Panel .overview .chart")
+
+    @chartWidget = new Chart(@uis.overview.chart)
 
     # Bind events
     $(window)           .resize                    @relayout
@@ -76,6 +78,7 @@ class Panel
       @uis.overview.location    .html country.Country
       @uis.overview.amount      .html country.USD
       # @uis.overview.nb_projects .html country.
+      @chartWidget.render()
 
   onModeChanged: (e, mode) =>
     ### hide all the views, show the wanted one ###

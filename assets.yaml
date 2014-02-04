@@ -21,5 +21,6 @@ js_all:
     - contents:
       - "../assets/coffee/map.coffee"
       - "../assets/coffee/panel.coffee"
+      - "../assets/coffee/chart.coffee"
       - "../assets/coffee/navigation.coffee"
       filters: coffeescript

@@ -9,7 +9,9 @@ CIRCLE_COLOR_HOVER = $CIRCLE_COLOR.darken(70%)
 CIRCLE_STROKE      = $CIRCLE_COLOR.darken(70%)
 
 body:
-  background-color:grey
+  //background-image: url("../images/fresh_snow.png") # light
+  background-image: url("../images/zwartevilt.png")
+  color : #E1E1E1
 
 .container:
   overflow       : hidden
@@ -35,7 +37,7 @@ body:
   #figures:
     padding-top:10px
   .img_container:
-    background-image : url('/static/images/hq.jpg')
+    background-image : url('../images/hq.jpg')
     position         : relative
     height           : 300px
     background-size  : cover

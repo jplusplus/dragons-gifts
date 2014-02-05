@@ -36,7 +36,7 @@ class Panel
       project:
         title      : $(".Panel .single_project .title")
         location   : $(".Panel .single_project .location")
-        description: $(".Panel .single_project .description")
+        description: $(".Panel .single_project .description .wrapper")
         img        : $(".Panel .img_container")
       # country infos (OVERVIEW_MODE)
       overview:
@@ -71,7 +71,8 @@ class Panel
     if project?
       @uis.project.title       .html project.title
       @uis.project.location    .html project.recipient_condensed
-      @uis.project.description .html project.description
+      @uis.project.description .html(project.description)
+      @uis.project.description.parent().scrollTop(0) # scroll to the top
       @uis.project.img.css("background-image","url('static/images/"+project.img+"')")
 
   onOverviewSelected: (e, country) =>

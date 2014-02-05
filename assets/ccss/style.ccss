@@ -51,14 +51,17 @@ body:
     padding-top  : 5px
   .description:
     overflow     : auto
-    padding-left : 10px
-    padding-top  : 5px
+    > .wrapper:
+      padding : 20px
+      max-width: 500px
+      font-size: 1.3em
   .but:
     margin-top: 10px
-  #prv_button:
-    width: 104px
   .navigation-buttons:
     margin:20px
+    button:
+      min-width:104px
+      margin: 20px
   // --------------------
   // Different views in the panel (depending of mode)
   .view:

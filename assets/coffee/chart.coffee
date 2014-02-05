@@ -28,37 +28,26 @@ class Chart
     # create svg element
     # parent svg element will contain the chart
     d3.select(@ui).select("svg").remove()
-    chart = d3.select(@ui).append("svg").attr("width", w).attr("height", h)
+    chart = d3.select(@ui).append("svg").attr("width", w).attr("height", h).attr("class","blanc")
 
-    # load data from a CSV file
-    # d3.csv "../static/data/chart_aiddata.csv", ((d) ->
-    #   if d.country is country_name
-    #     "Transport/Comm.": +d.transport
-    #     "Agriculture/Water": +d.agriculture
-    #     "Education/Culture": +d.education
-    #     Energy: +d.energy
-    #     Government: +d.govt
-    #     "Health/Emerg.": +d.health
-    #     Other: +d.other
-    #     "Mining/Industry": +d.industry
-
-    #total: +d.total
-    # ), (dataset) ->
-    # code to generate chart goes here
-
-    dataset = d3.entries(dataset[0])
+    dataset = {}
+    dataset["Transport/Comm."] = +details.transport
+    dataset["Agriculture/Water"] = +details.agriculture
+    dataset["Education/Culture"] = +details.education
+    dataset["Energy"] = +details.energy
+    dataset["Government"] = +details.govt
+    dataset["Health/Emerg."] = +details.health
+    dataset["Other"] = +details.other
+    dataset["Mining/Industry"] = +details.industry
+    
     barwidth = w / 8
     spacing = 1
     chartPadding = 70
     chartTop = 60
     chartBottom = h - chartPadding
     chartRight = w - 5
-    barLabels = dataset.map((datum) ->
-      datum.key
-    )
-    max = Math.max.apply(Math, dataset.map((datum) ->
-      datum.value
-    ))
+    barLabels = _.keys(dataset)
+    max = Math.max.apply(Math, _.values(dataset))
     yScale = d3.scale.linear().domain([
       0
       max
@@ -66,13 +55,17 @@ class Chart
       chartBottom
       chartPadding - chartTop
     ]).nice()
+
+    console.log(barLabels)
     xScale = d3.scale.ordinal().domain(barLabels).rangeRoundBands([
       chartPadding
       chartRight
     ], 0.1)
+
     yAxis = d3.svg.axis().scale(yScale).orient("left")
     xAxis = d3.svg.axis().scale(xScale).orient("bottom").tickSize(0)
-    
+
+
     # create bars
     # returns empty selection
     # parses & counts data
@@ -84,54 +77,56 @@ class Chart
     # attach event listener to each bar for mouseover
     # adds a "smoothing" animation to the transition
     # set the duration of the transition in ms (default: 250)
-    chart.selectAll("rect").data(dataset).enter().append("rect").attr("x", (d) ->
-      xScale d.key
-    ).attr("y", (d) ->
-      yScale d.value
-    ).attr("width", xScale.rangeBand()).attr("height", (d) ->
-      chartBottom - yScale(d.value)
-    ).attr("fill", "red").on("mouseover", (d) ->
-      d3.select(this).transition().duration(200).attr "fill", "darkred"
-      showValue d
-      return
-    ).on "mouseout", (d) ->
-      # adds a "smoothing" animation to the transition
-      # set the duration of the transition in ms (default: 250)
-      d3.select(this).transition().duration(200).attr "fill", "red"
-      hideValue()
-      return
+    dataset = _.pairs(dataset)
+    chart.selectAll("rect")
+      .data(dataset)
+      .enter()
+      .append("rect")
+      .attr("x", (d, i) -> xScale i)
+      .attr("y", (d) -> yScale d[1])
+      .attr("width", xScale.rangeBand())
+      .attr("height", (d) -> chartBottom - yScale(d[1]))
+      .attr("fill", "red")
+      .on "mouseover", (d) ->
+        d3.select(this)
+          .transition()
+          .duration(200)
+          .attr "fill", "darkred"
+          chart.append("text")
+            .text(d[1])
+            .attr("x", xScale(dataset.indexOf(d)) + (xScale.rangeBand() / 2))
+            .attr("y", yScale(d[1]) + 15 ) 
+            .attr("class", "value_bar")
 
-    showValue = (d) ->
-      chart.append("text").text(d.value).attr
-        x: xScale(d.key) + (xScale.rangeBand() / 2)
-        y: yScale(d.value) + 15
-        class: "value_bar"
+      .on "mouseout", (d) ->
+        d3.select(this)
+          .transition()
+          .duration(200)
+          .attr "fill", "red"
+        chart.select("text.value_bar").remove()
 
-      return
 
-    hideValue = ->
-      chart.select("text.value_bar").remove()
-      return
-
-    
-    #.text(function(d){
-    #  return d.value;
-    #})
     # multiple attributes may be passed in as an object
-    chart.selectAll("text").data(dataset).enter().append("text").attr
-      x: (d) ->
-        xScale(d.key) + xScale.rangeBand() / 2
-
-      y: (d) ->
-        h - yScale(d.value)
-
+    chart.selectAll("text")
+      .data(dataset)
+      .enter()
+        .append("text")
+        .attr("x", (d) -> xScale(d[0]) + xScale.rangeBand() / 2)
+        .attr("y", (d) -> h - yScale(d[1]))
     
     # after chart code, set up group element for axis
     # use transformation to adjust position of axis
     y_axis = chart.append("g").attr("class", "axis").attr("transform", "translate(" + chartPadding + ",0)")
-    
+
     # generate y Axis within group using yAxis function
     yAxis y_axis
     # push to bottom
-    chart.append("g").attr("class", "axis xAxis").attr("transform", "translate(0," + chartBottom + ")").call xAxis
-    chart.selectAll(".xAxis").selectAll("text").style("text-anchor", "end").attr "transform", "rotate(-45)"
+
+    chart.append("g")
+       .attr("class", "axis xAxis")
+       .attr("transform", "translate(0," + chartBottom + ")")
+       .call(xAxis)
+         .selectAll('text')
+            .style('text-anchor','end')
+            .attr('transform','rotate(-35)')
+

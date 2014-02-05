@@ -78,6 +78,8 @@ body:
         font-weight: bold
         fill: white
         text-anchor: middle
+      .blanc:
+        background-color: white
 
 .africa-container:
   .all-path:

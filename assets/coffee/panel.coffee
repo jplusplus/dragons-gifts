@@ -77,7 +77,6 @@ class Panel
       @uis.overview.location    .html country.Country
       @uis.overview.amount      .html country.USD
       @uis.overview.nb_projects .html @navigation.data.projects_details.get(country.Country)['total']
-      @chartWidget.render()
       @chartWidget.render(country.Country)
 
   onModeChanged: (e, mode) =>

@@ -37,6 +37,7 @@ class Panel
         title      : $(".Panel .single_project .title")
         location   : $(".Panel .single_project .location")
         description: $(".Panel .single_project .description")
+        img        : $(".Panel .img_container")
       # country infos (OVERVIEW_MODE)
       overview:
         location    : $(".Panel .overview .location")
@@ -71,6 +72,8 @@ class Panel
       @uis.project.title       .html project.title
       @uis.project.location    .html project.recipient_condensed
       @uis.project.description .html project.description
+      console.log project
+      @uis.project.img.css("background-image","url('../static/images/"+project.img+"')")
 
   onOverviewSelected: (e, country) =>
     if country?

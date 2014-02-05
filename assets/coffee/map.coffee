@@ -168,6 +168,11 @@ class AfricaMap
         .on 'click', (d) ->
           that.navigation.setOverview(d)
     @drawCircles(scale, "USD")
+    # tooltip
+    @circles.each (d) ->
+      $(d3.select(this)).qtip
+        content: "#{d.Country}"
+        style  : 'qtip-dark'
 
   onModeChanged: (e, mode) =>
     if (mode == MODE_OVERVIEW or mode == MODE_OVERVIEW_INTRO)

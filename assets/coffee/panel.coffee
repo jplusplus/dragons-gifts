@@ -72,7 +72,6 @@ class Panel
       @uis.project.title       .html project.title
       @uis.project.location    .html project.recipient_condensed
       @uis.project.description .html project.description
-      console.log project
       @uis.project.img.css("background-image","url('../static/images/"+project.img+"')")
 
   onOverviewSelected: (e, country) =>

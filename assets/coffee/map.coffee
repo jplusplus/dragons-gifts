@@ -93,7 +93,6 @@ class AfricaMap
           .transition()
             .ease(CONFIG.transition_circle_ease)
             .duration(CONFIG.transition_circle_duration)
-            .delay(CONFIG.transition_map_duration)
               .attr("r" , get_radius)
       else
        d3.select(this)

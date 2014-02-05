@@ -30,7 +30,6 @@ class Chart
     d3.select(@ui).select("svg").remove()
     chart = d3.select(@ui).append("svg").attr("width", w).attr("height", h)
 
-
     # load data from a CSV file
     # d3.csv "../static/data/chart_aiddata.csv", ((d) ->
     #   if d.country is country_name

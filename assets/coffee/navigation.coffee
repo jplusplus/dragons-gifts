@@ -57,7 +57,6 @@ class Navigation
       .await(@loadedDataCallback)
 
   loadedDataCallback: (error, geojson, tour, overview, projects_details) =>
-    @setMode(MODE_INTRO)
     @data.projects         = tour
     @data.overview         = overview
     # set a map for projects details with country as key
@@ -68,6 +67,7 @@ class Navigation
     # instanciate widgets
     @map         = new AfricaMap(this, geo_features, @data.projects, @data.overview)
     @panel       = new Panel(this)
+    @setMode(MODE_INTRO)
 
   setMode: (mode) =>
     if @mode != mode

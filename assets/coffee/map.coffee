@@ -19,13 +19,13 @@ class AfricaMap
     svg_height                 : 500
     svg_width                  : 500
     initial_zoom               : 350
-    close_zoom                 : 800
+    close_zoom                 : 1.5
     initial_center             : [15, 0]
-    scale_range_tour           : [6, 9]  # scale for compute the circle radius
+    radius_circle_tour         : 7
     scale_range_overview       : [4, 15] # scale for compute the circle radius
-    transition_map_duration    : 1500
+    transition_map_duration    : 1000
     transition_circle_duration : 500
-    transition_circle_ease     : "easeOutExpo"
+    transition_circle_ease     : "easeInSine"
 
   constructor: (navigation, countries, projects, overview) ->
     @navigation   = navigation
@@ -44,7 +44,7 @@ class AfricaMap
     @projection = d3.geo.mercator()
       .center(CONFIG.initial_center)
       .scale(CONFIG.initial_zoom)
-      .translate([CONFIG.svg_width/2 - 40, CONFIG.svg_height/2])
+      .translate([CONFIG.svg_width/2, CONFIG.svg_height/2])
 
     # Create the Africa path
     @path = d3.geo.path()
@@ -86,7 +86,11 @@ class AfricaMap
             .ease(CONFIG.transition_circle_ease)
             .duration(CONFIG.transition_circle_duration)
             .delay(CONFIG.transition_map_duration)
-              .attr("r" , (d) -> scale(parseFloat(d[radius_field_name])))
+              .attr "r" , (d) ->
+                if typeof(scale) == "number"
+                  scale
+                else
+                  scale(parseFloat(d[radius_field_name]))
       else
        d3.select(this)
         .attr("r" , (d) -> scale(parseFloat(d[radius_field_name])))
@@ -95,9 +99,6 @@ class AfricaMap
     that = this
     # compute scale
     values = @projects.map((d) -> parseFloat(d.usd_defl))
-    @project_scale  = d3.scale.linear()
-      .domain([Math.min.apply(Math, values), Math.max.apply(Math, values)])
-      .range(CONFIG.scale_range_tour)
     #remove previous circles
     @groupOverview.selectAll("circle").transition()
       .ease(CONFIG.transition_circle_ease)
@@ -110,9 +111,8 @@ class AfricaMap
       .append("circle")
         .on 'click', (d) ->
           that.navigation.setProject(d)
-          # $(this).trigger("mouseout") # hide the tooltip
     # postioning cirlces
-    @drawCircles(@project_scale)
+    @drawCircles(CONFIG.radius_circle_tour)
     # tooltip
     @circles.each (d) ->
       $(d3.select(this)).qtip
@@ -121,24 +121,21 @@ class AfricaMap
 
   onProjectSelected: (e, project) =>
     # select a cirlce
-    @circles.each (d, i) ->
-      d3.select(this).classed("active", project is d)
+    @circles.each (d, i) -> d3.select(this).classed("active", project is d)
     # zoom
     selected = @circles.filter((d) -> d is project)
     if project? # zoom
-      center = [project.lon, project.lat]
-      @projection.center(center).scale(CONFIG.close_zoom)
-      @groupPaths.selectAll("path")
-        .transition().duration(CONFIG.transition_map_duration)
-        .attr("d", @path)
-      @drawCircles(@project_scale, "usd_defl")
-      $(selected).trigger("mouseover")
+      offset_x = - (parseFloat(selected.attr("cx")) * CONFIG.close_zoom - CONFIG.svg_width / 2)
+      offset_y = - (parseFloat(selected.attr("cy")) * CONFIG.close_zoom - CONFIG.svg_height / 2)
+      @group.selectAll("path, circle")
+        .transition()
+        .duration(CONFIG.transition_map_duration)
+        .attr "transform", "translate(#{offset_x}, #{offset_y})scale(#{CONFIG.close_zoom})"
     else # dezoom
-      @projection.center(CONFIG.initial_center).scale(CONFIG.initial_zoom)
-      @groupPaths.selectAll("path")
-        .transition().duration(CONFIG.transition_map_duration)
-        .attr("d", @path)
-      @drawCircles(@project_scale)
+      @group.selectAll("path, circle")
+        .transition()
+          .duration(CONFIG.transition_map_duration)
+          .attr "transform", "translate(0,0)scale(1)"
 
   onOverviewSelected: (e, country) =>
     ### color the circle on the map ###
@@ -170,7 +167,7 @@ class AfricaMap
       if @current_mode != "overview"
         @drawOverviewCircles()
         @current_mode = "overview"
-    else
+    else if @current_mode != "project"
       @current_mode = "project"
       @drawProjectCircles()
 

@@ -29,6 +29,6 @@
   border: none;
 }
 .toggle-radio:not(.old-ie) [type="radio"]:checked + label {
-  background: #428bca;
+  background: #00628B;
   color:white;
 }

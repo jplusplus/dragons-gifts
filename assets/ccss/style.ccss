@@ -12,6 +12,8 @@ body:
   //background-image: url("../images/fresh_snow.png") # light
   background-image: url("../images/zwartevilt.png")
   color : #E1E1E1
+  overflow: hidden
+  font-family: 'Roboto', sans-serif
 
 .container:
   overflow       : hidden
@@ -24,6 +26,7 @@ body:
   padding-bottom   : 99999px
 
 .Panel:
+  background-color: "rgba(0,0,0,0.5)"
   .title:
     padding-left : 10px
     color        : white
@@ -48,39 +51,51 @@ body:
     padding-top  : 5px
   .description:
     overflow     : auto
-    padding-left : 10px
-    padding-top  : 5px
+    > .wrapper:
+      padding : 20px
+      max-width: 500px
+      font-size: 1.3em
   .but:
     margin-top: 10px
-  #prv_button:
-    width: 104px
   .navigation-buttons:
-    margin:20px
+    button:
+      min-width:104px
+      margin: 20px
+  // --------------------
+  // Different views in the panel (depending of mode)
+  .view:
+    &.overview:
+      .table:
+        .value:
+          font-size:1.5em
+        #prj_cat_text:
+          margin-left: 50px
 
-  .view.overview:
-    .table:
-      .value:
-        font-size:1.5em
-      #prj_cat_text:
-        margin-left: 50px
+// ------------------------
+// CHART
+.chart:
+  .axis path, .axis line:
+    fill: none
+    stroke: black
+    shape-rendering: crispEdges
+  .axis text:
+    font-family: sans-serif
+    font-size: 11px
+  .value_bar:
+    font-family: sans-serif
+    font-size: 13px
+    font-weight: bold
+    fill: white
+    text-anchor: middle
 
-    .chart:
-      .axis path, .axis line:
-        fill: none
-        stroke: black
-        shape-rendering: crispEdges
-      .axis text:
-        font-family: sans-serif
-        font-size: 11px
-      .value_bar:
-        font-family: sans-serif
-        font-size: 13px
-        font-weight: bold
-        fill: white
-        text-anchor: middle
-      .blanc:
-        background-color: white
+// ---------------------
+// Toogle button radio
+.toggle-radio:
+  position:absolute
+  right: 0
 
+// ---------------------
+// MAP
 .africa-container:
   .all-path:
     fill         : $MAP_COLOR

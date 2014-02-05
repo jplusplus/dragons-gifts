@@ -77,7 +77,7 @@ class Panel
       @uis.overview.location    .html country.Country
       @uis.overview.amount      .html country.USD
       # @uis.overview.nb_projects .html country.
-      @chartWidget.render()
+      @chartWidget.render(country.Country)
 
   onModeChanged: (e, mode) =>
     ### hide all the views, show the wanted one ###

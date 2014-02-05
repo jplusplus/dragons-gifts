@@ -20,10 +20,10 @@ class Chart
   constructor: ->
     @ui = ".chart"
 
-  render: =>
+  render: (country_name) =>
     # define dimensions of svg
-    h = 220
-    w = 300
+    h = 200
+    w = 290
 
     # create svg element
     # parent svg element will contain the chart
@@ -32,7 +32,7 @@ class Chart
 
     # load data from a CSV file
     d3.csv "../static/data/chart_aiddata.csv", ((d) ->
-      if d.country is "Ghana"
+      if d.country is country_name
         "Transport/Comm.": +d.transport
         "Agriculture/Water": +d.agriculture
         "Education/Culture": +d.education

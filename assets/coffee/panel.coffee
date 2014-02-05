@@ -15,6 +15,9 @@
 # -----------------------------------------------------------------------------
 class Panel
 
+  CONFIG = 
+    default_picture : "main.jpg" # in the static/images folder
+
   constructor: (navigation) ->
 
     @navigation = navigation
@@ -67,13 +70,18 @@ class Panel
     description.css
       height : $(window).height() - description.offset().top - navigation_btn.outerHeight(true)
 
+  changeIllustration:(img=CONFIG.default_picture) =>
+      @uis.project.img.css("background-image","url('static/images/#{img}')")
+
   onProjectSelected: (e, project) =>
     if project?
       @uis.project.title       .html project.title
       @uis.project.location    .html project.recipient_condensed
       @uis.project.description .html(project.description)
       @uis.project.description.parent().scrollTop(0) # scroll to the top
-      @uis.project.img.css("background-image","url('static/images/"+project.img+"')")
+      @changeIllustration(project.img)
+    else
+      @changeIllustration() #default illustration
 
   onOverviewSelected: (e, country) =>
     if country?
@@ -82,6 +90,8 @@ class Panel
       @uis.overview.amount      .html country.USD
       @uis.overview.nb_projects .html details['total']
       @chartWidget.render(details)
+    else
+      @changeIllustration()  #default illustration
 
   onModeChanged: (e, mode) =>
     ### hide all the views, show the wanted one ###

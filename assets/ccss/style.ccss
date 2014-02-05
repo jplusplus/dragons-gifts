@@ -58,7 +58,6 @@ body:
   .but:
     margin-top: 10px
   .navigation-buttons:
-    margin:20px
     button:
       min-width:104px
       margin: 20px

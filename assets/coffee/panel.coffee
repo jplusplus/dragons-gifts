@@ -76,7 +76,7 @@ class Panel
     if country?
       @uis.overview.location    .html country.Country
       @uis.overview.amount      .html country.USD
-      # @uis.overview.nb_projects .html country.
+      @uis.overview.nb_projects .html @navigation.data.projects_details.get(country.Country)['total']
       @chartWidget.render()
 
   onModeChanged: (e, mode) =>

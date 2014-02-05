@@ -25,35 +25,48 @@ class Navigation
 
   CONFIG =
     urls :
-      geojson  : "static/data/africa.json"
-      tour     : "static/data/tour.json"
-      overview : "static/data/global_view.json"
+      geojson          : "static/data/africa.json"
+      tour             : "static/data/tour.json"
+      overview         : "static/data/global_view.json"
+      projects_details : "static/data/chart_aiddata.csv"
 
   constructor: ->
-    @projects        = undefined
-    @mode            = undefined
-    @current_project = undefined
-
+    @mode             = undefined
+    @current_project  = undefined
+    # data (from csv)
+    @data =
+      projects         : undefined
+      overview         : undefined
+      projects_details : undefined
+    # widgets
+    @map   = undefined
+    @panel = undefined
+    # ui elements
     @uis =
       page              : $(".container:first")
       switch_mode_radio : $(".toggle-radio input[name=ab]")
-
     # bind event
     @uis.switch_mode_radio.change(@onSwitchRadioChanged)
 
-  start: =>
+  init: =>
     queue()
       .defer(d3.json, CONFIG.urls.geojson)
       .defer(d3.json, CONFIG.urls.tour)
       .defer(d3.json, CONFIG.urls.overview)
+      .defer(d3.csv, CONFIG.urls.projects_details)
       .await(@loadedDataCallback)
 
-  loadedDataCallback: (error, geojson, tour, overview) =>
+  loadedDataCallback: (error, geojson, tour, overview, projects_details) =>
     @setMode(MODE_INTRO)
-    @projects    = tour
-    @overview    = overview
+    @data.projects         = tour
+    @data.overview         = overview
+    # set a map for projects details with country as key
+    @data.projects_details = d3.map()
+    @data.projects_details.set(p.country, p) for p in projects_details
+    # get the features from topojson
     geo_features = topojson.feature(geojson, geojson.objects.continent_Africa_subunits).features
-    @map         = new AfricaMap(this, geo_features, @projects, @overview)
+    # instanciate widgets
+    @map         = new AfricaMap(this, geo_features, @data.projects, @data.overview)
     @panel       = new Panel(this)
 
   setMode: (mode) =>
@@ -83,14 +96,14 @@ class Navigation
     """
     # we need an interger as @current_project
     if project? and typeof(project) is "object"
-      project = @projects.indexOf(project)
+      project = @data.projects.indexOf(project)
     if project != @current_project # if a new project is selected
       # save the state of the selected project
       @current_project = project
       # ensure the mode
       @setMode(MODE_TOUR) if project?
       # trigger a projectSelected with the selected project or null if no project is selected
-      $(document).trigger("projectSelected", if @current_project? then @projects[@current_project] else null)
+      $(document).trigger("projectSelected", if @current_project? then @data.projects[@current_project] else null)
 
   setOverview: (country) =>
     """
@@ -100,27 +113,27 @@ class Navigation
     """
     # we need an interger as @current_overview
     if country? and typeof(country) is "object"
-      country = @overview.indexOf(country)
+      country = @data.overview.indexOf(country)
     if country != @current_overview # if a new country is selected
       # save the state of the selected project
       @current_overview = country
       # ensure the mode
       @setMode(MODE_OVERVIEW) if country?
-    $(document).trigger("overviewSelected", if @current_overview? then @overview[@current_overview] else null)
+    $(document).trigger("overviewSelected", if @current_overview? then @data.overview[@current_overview] else null)
 
   nextProject: =>
     if @hasNext()
-      @setProject(@projects[@current_project + 1])
+      @setProject(@data.projects[@current_project + 1])
     else # if it's after the last project, we switch to the START_OVERVIEW mode
       @setMode(MODE_START_OVERVIEW)
 
   previousProject: =>
     if @hasPrevious()
-      @setProject(@projects[@current_project - 1])
+      @setProject(@data.projects[@current_project - 1])
     else # if it's before the first project, we switch to the INTRO mode
       @setMode(MODE_INTRO)
 
-  hasNext    : => @current_project < @projects.length - 1
+  hasNext    : => @current_project < @data.projects.length - 1
   hasPrevious: => @current_project > 0
 
   onSwitchRadioChanged: =>

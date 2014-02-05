@@ -16,11 +16,7 @@
 class AfricaMap
 
   CONFIG =
-    svg_height                 : 500
-    svg_width                  : 500
-    initial_zoom               : 350
     close_zoom                 : 1.5
-    initial_center             : [15, 0]
     radius_circle_tour         : 7
     scale_range_overview       : [4, 15] # scale for compute the circle radius
     transition_map_duration    : 1000
@@ -34,17 +30,30 @@ class AfricaMap
     @overview     = overview
     @current_mode = undefined
 
+    @relayout()
+
+    # Bind events
+    $(document).on "modeChanged"     , @onModeChanged
+    $(document).on "projectSelected" , @onProjectSelected
+    $(document).on "overviewSelected", @onOverviewSelected
+    $(window)  .resize                 @relayout
+
+  relayout: =>
+    @width = $(".africa-container").width()
+    @height = @width * 1
+    if @height > $(window).height()
+       @height = $(window).height()
+       @width = @height / 1
     # Create svg tag
     @svg = d3.select(".africa-container")
       .insert("svg", ":first-child")
-      .attr("width", CONFIG.svg_width)
-      .attr("height", CONFIG.svg_height)
+      .attr("width", @width * 2)
+      .attr("height", $(window).height())
 
     # Create projection
     @projection = d3.geo.mercator()
-      .center(CONFIG.initial_center)
-      .scale(CONFIG.initial_zoom)
-      .translate([CONFIG.svg_width/2, CONFIG.svg_height/2])
+      .scale(@width * .5) # ... depends of the projection I think. Try!
+      .translate([@width/2, @height/2])
 
     # Create the Africa path
     @path = d3.geo.path()
@@ -59,11 +68,6 @@ class AfricaMap
       .attr("class", "all-project-points")
     @drawMap()
     @drawProjectCircles()
-
-    # Bind events
-    $(document).on("modeChanged"     , @onModeChanged)
-    $(document).on("projectSelected" , @onProjectSelected)
-    $(document).on("overviewSelected", @onOverviewSelected)
 
   drawMap: =>
     # Create every countries
@@ -128,8 +132,8 @@ class AfricaMap
     # zoom
     selected = @circles.filter((d) -> d is project)
     if project? # zoom
-      offset_x = - (parseFloat(selected.attr("cx")) * CONFIG.close_zoom - CONFIG.svg_width / 2)
-      offset_y = - (parseFloat(selected.attr("cy")) * CONFIG.close_zoom - CONFIG.svg_height / 2)
+      offset_x = - (parseFloat(selected.attr("cx")) * CONFIG.close_zoom - @width / 2)
+      offset_y = - (parseFloat(selected.attr("cy")) * CONFIG.close_zoom - @height / 2)
       @group.selectAll("path, circle")
         .transition()
         .duration(CONFIG.transition_map_duration)

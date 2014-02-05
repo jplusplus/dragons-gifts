@@ -73,8 +73,16 @@ class AfricaMap
         .append("path")
         .attr("d", @path)
 
-  drawCircles: (scale, radius_field_name="usd_defl", appearing_animatation=true) =>
+  drawCircles: (scale_or_radius, radius_field_name="usd_defl", appearing_animatation=true) =>
     that = this
+
+    get_radius = (d) ->
+      ### return the radius, depending of the type of scale_or_radius ###
+      if typeof(scale_or_radius) == "number"
+        scale_or_radius
+      else
+        scale_or_radius(parseFloat(d[radius_field_name]))
+
     @circles.each (d) ->
       d3.select(this)
         .attr("cx", (d) -> that.projection([d.lon, d.lat])[0])
@@ -86,14 +94,10 @@ class AfricaMap
             .ease(CONFIG.transition_circle_ease)
             .duration(CONFIG.transition_circle_duration)
             .delay(CONFIG.transition_map_duration)
-              .attr "r" , (d) ->
-                if typeof(scale) == "number"
-                  scale
-                else
-                  scale(parseFloat(d[radius_field_name]))
+              .attr("r" , get_radius)
       else
        d3.select(this)
-        .attr("r" , (d) -> scale(parseFloat(d[radius_field_name])))
+        .attr("r", get_radius)
 
   drawProjectCircles: =>
     that = this

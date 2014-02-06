@@ -17,7 +17,7 @@ class Panel
 
   CONFIG = 
     default_picture : "main.jpg" # in the static/images folder
-    default_title   : "Dragon Gift"
+    default_title   : "Dragons Gifts"
 
   constructor: (navigation) ->
 
@@ -69,6 +69,8 @@ class Panel
     navigation_btn = $(@uis.navigation_btn.get(@navigation.mode))
     description.css
       height : $(window).height() - description.offset().top - navigation_btn.outerHeight(true)
+    @uis.img.css
+      height : Math.min(300, $(window).height() * .4)
 
   changeIllustration:(img=CONFIG.default_picture, title=CONFIG.default_title, transition=true) =>
       that = this

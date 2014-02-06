@@ -21,31 +21,31 @@ class Panel
   constructor: (navigation) ->
 
     @navigation = navigation
-
+    @ui  = $(".Panel")
     @uis =
       all_views: $(".Panel .view")
       views:
-        intro          : $(".Panel .view.intro_main")
-        single_project : $(".Panel .view.single_project")
-        start_overview : $(".Panel .view.start_overview")
-        overview_intro : $(".Panel .view.overview_intro")
-        overview       : $(".Panel .view.overview")
-      navigation_btn : $(".Panel .navigation-buttons")
-      prv_button     : $(".Panel .prv_button")
-      nxt_button     : $(".Panel .nxt_button")
-      tour_button    : $(".Panel .tour_button")
-      overview_button: $(".Panel .overview_button")
+        intro          : $(".view.intro_main"                     , @ui)
+        single_project : $(".view.single_project"                 , @ui)
+        start_overview : $(".view.start_overview"                 , @ui)
+        overview_intro : $(".view.overview_intro"                 , @ui)
+        overview       : $(".view.overview"                       , @ui)
+      navigation_btn :   $(".navigation-buttons"                  , @ui)
+      prv_button     :   $(".prv_button"                          , @ui)
+      nxt_button     :   $(".nxt_button"                          , @ui)
+      tour_button    :   $(".tour_button"                         , @ui)
+      overview_button:   $(".overview_button"                     , @ui)
       # single project (TOUR MODE)
       project:
-        title      : $(".Panel .single_project .title")
-        location   : $(".Panel .single_project .location")
-        description: $(".Panel .single_project .description .wrapper")
-        img        : $(".Panel .img_container")
+        title      :     $(".single_project .title"               , @ui)
+        location   :     $(".single_project .location"            , @ui)
+        description:     $(".single_project .description .wrapper", @ui)
+        img        :     $(".img_container"                       , @ui)
       # country infos (OVERVIEW_MODE)
       overview:
-        location    : $(".Panel .overview .location")
-        amount      : $(".Panel .overview #tot_usd")
-        nb_projects : $(".Panel .overview #tot_prj")
+        location    :    $(".overview .location"                  , @ui)
+        amount      :    $(".overview #tot_usd"                   , @ui)
+        nb_projects :    $(".overview #tot_prj"                   , @ui)
 
     @chartWidget = new Chart()
 
@@ -54,6 +54,7 @@ class Panel
     $(document)         .on 'projectSelected' ,    @onProjectSelected
     $(document)         .on 'overviewSelected',    @onOverviewSelected
     $(document)         .on 'modeChanged'     ,    @onModeChanged
+    $(document)         .on 'loading'         ,    @onLoadingChanged
     @uis.prv_button     .on 'click'           ,    @navigation.previousProject
     @uis.nxt_button     .on 'click'           ,    @navigation.nextProject
     @uis.tour_button    .on 'click'           , => @navigation.setMode(MODE_TOUR)

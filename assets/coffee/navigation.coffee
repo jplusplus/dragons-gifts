@@ -33,6 +33,7 @@ class Navigation
   constructor: ->
     @mode             = undefined
     @current_project  = undefined
+    @is_loading       = true
     # data (from csv)
     @data =
       projects         : undefined
@@ -57,6 +58,8 @@ class Navigation
       .await(@loadedDataCallback)
 
   loadedDataCallback: (error, geojson, tour, overview, projects_details) =>
+    setTimeout(=> @loading()
+    1000)
     @data.projects         = tour
     @data.overview         = overview
     # set a map for projects details with country as key
@@ -68,6 +71,12 @@ class Navigation
     @map         = new AfricaMap(this, geo_features, @data.projects, @data.overview)
     @panel       = new Panel(this)
     @setMode(MODE_INTRO)
+
+  loading: =>
+    @is_loading = not @is_loading
+    console.log "cpcou", @is_loading, $(".container-full")
+    $(".container-full").toggleClass("loading", @is_loading)
+    $(document).trigger("loading", @is_loading)
 
   setMode: (mode) =>
     if @mode != mode

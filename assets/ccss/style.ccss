@@ -55,6 +55,7 @@ body:
     position         : relative
     height           : 300px
     background-size  : cover
+    background-position: center
   .description:
     position:relative
     overflow : hidden
@@ -129,5 +130,24 @@ body:
       cursor : pointer
       fill   : $CIRCLE_COLOR_HOVER
       stroke : $CIRCLE_COLOR_HOVER.darken(70%)
+
+// ---------------------
+// LOADDING
+.Panel:
+  transition-delay: 1s
+  transition-property: right
+  right: 0
+  transition-duration: .50s
+.africa-container, .toggle-radio:
+  transition-property: opacity
+  transition-duration: 1s
+.toggle-radio:
+  transition-delay: 2s
+
+.loading:
+  .Panel:
+    right:-2000px
+  .africa-container, .toggle-radio:
+    opacity: 0
 
 // EOF

@@ -22,130 +22,88 @@ class Chart
 
   render: (details) =>
     # define dimensions of svg
-    h = 200
-    w = 290
+
+    margin = {top: 20, right: 0, bottom: 100, left: 50}
+    w = 300 - margin.left - margin.right
+    h = 250 - margin.top - margin.bottom
+
 
     # parent svg element will contain the chart
     d3.select(@ui).select("svg").remove()
-
     chart = d3.select(@ui)
       .append("svg")
-      .attr("width", w)
-      .attr("height", h)
+      .attr("width", w + margin.left + margin.right)
+      .attr("height", h + margin.top + margin.bottom)
+      .attr("style","background-color:white")
+      .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    dataset = 
-      "Transport/Comm."   : +details.transport
-      "Agriculture/Water" : +details.agriculture
-      "Education/Culture" : +details.education
-      "Energy"            : +details.energy
-      "Government"        : +details.govt
-      "Health/Emerg."     : +details.health
-      "Other"             : +details.other
-      "Mining/Industry"   : +details.industry
-
-    barwidth     = w / 8
-    spacing      = 1
-    chartPadding = 70
-    chartTop     = 60
-    chartBottom  = h - chartPadding
-    chartRight   = w - 5
-    barLabels    = _.keys(dataset)
-    max          = Math.max.apply(Math, _.values(dataset))
-
-    x = d3.scale.ordinal()
-      .rangeRoundBands([0, w], .1)
-
-    y = d3.scale.linear()
-      .range([h, 0])
-
-    xAxis = d3.svg.axis()
-      .scale(x)
-      .orient("bottom");
-
-    yAxis = d3.svg.axis()
-      .scale(y)
-      .orient("left")
-      .tickFormat(formatPercent)
-
-    dataset = _.pairs(dataset)
-
-    # yScale       = d3.scale.linear().domain([
-    #   0
-    #   max
-    # ]).range([
-    #   chartBottom
-    #   chartPadding - chartTop
-    # ]).nice()
-
-    # xScale = d3.scale.ordinal().domain(barLabels).rangeRoundBands([
-    #   chartPadding
-    #   chartRight
-    # ], 0.1)
-
-    # yAxis = d3.svg.axis().scale(yScale).orient("left")
-    # xAxis = d3.svg.axis().scale(xScale).orient("bottom").tickSize(0)
-
-
-    # create bars
-    # returns empty selection
-    # parses & counts data
-    # binds data to placeholders
-    # creates a rect svg element for every datum
-    # bar
-    # position of the top of each bar
+    dataset = {}
+    dataset["Transport/Comm."] = +details.transport
+    dataset["Agriculture/Water"] = +details.agriculture
+    dataset["Education/Culture"] = +details.education
+    dataset["Energy"] = +details.energy
+    dataset["Government"] = +details.govt
+    dataset["Health/Emerg."] = +details.health
+    dataset["Other"] = +details.other
+    dataset["Mining/Industry"] = +details.industry
     
-    # attach event listener to each bar for mouseover
-    # adds a "smoothing" animation to the transition
-    # set the duration of the transition in ms (default: 250)
-    # chart.selectAll("rect")
-    #   .data(dataset)
-    #   .enter()
-    #   .append("rect")
-    #   .attr("x", (d, i) -> xScale i)
-    #   .attr("y", (d) -> yScale d[1])
-    #   .attr("width", xScale.rangeBand())
-    #   .attr("height", (d) -> chartBottom - yScale(d[1]))
-    #   .attr("fill", "red")
-    #   .on "mouseover", (d) ->
-    #     d3.select(this)
-    #       .transition()
-    #       .duration(200)
-    #       .attr "fill", "darkred"
-    #       chart.append("text")
-    #         .text(d[1])
-    #         .attr("x", xScale(dataset.indexOf(d)) + (xScale.rangeBand() / 2))
-    #         .attr("y", yScale(d[1]) + 15 ) 
-    #         .attr("class", "value_bar")
+    barLabels = _.keys(dataset)
 
-    #   .on "mouseout", (d) ->
-    #     d3.select(this)
-    #       .transition()
-    #       .duration(200)
-    #       .attr "fill", "red"
-    #     chart.select("text.value_bar").remove()
+    max = Math.max.apply(Math, _.values(dataset))
 
+    formatxAxis = d3.format('.0f');
 
-    # # multiple attributes may be passed in as an object
-    # chart.selectAll("text")
-    #   .data(dataset)
-    #   .enter()
-    #     .append("text")
-    #     .attr("x", (d) -> xScale(d[0]) + xScale.rangeBand() / 2)
-    #     .attr("y", (d) -> h - yScale(d[1]))
-    
-    # # after chart code, set up group element for axis
-    # # use transformation to adjust position of axis
-    # y_axis = chart.append("g").attr("class", "axis").attr("transform", "translate(" + chartPadding + ",0)")
+    x = d3.scale.ordinal().rangeRoundBands([0, w],.1)
+    y = d3.scale.linear().range([h,0])
 
-    # # generate y Axis within group using yAxis function
-    # yAxis y_axis
-    # # push to bottom
+    xAxis = d3.svg.axis().scale(x).orient("bottom").tickSize(0)
+    yAxis = d3.svg.axis().scale(y).orient("left").tickFormat(formatxAxis).ticks(5)
 
-    # chart.append("g")
-    #    .attr("class", "axis xAxis")
-    #    .attr("transform", "translate(0," + chartBottom + ")")
-    #    .call(xAxis)
-    #      .selectAll('text')
-    #         .style('text-anchor','end')
-    #         .attr('transform','rotate(-35)')
+    x.domain(_.keys(dataset))
+    y.domain([0, max])
+
+    chart.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + h + ")")
+      .call(xAxis)
+        .selectAll('text')
+        .style('text-anchor','end')
+        .attr('transform','rotate(-45)')
+
+    chart.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+
+    chart.selectAll(".bar")
+      .data(_.pairs(dataset))
+        .enter()
+        .append("rect")
+        .attr("class","bar")
+        .attr("x", (d) -> x(d[0]))
+        .attr("width", x.rangeBand())
+        .attr("y", (d) -> y(d[1]))
+        .attr("height", (d) -> h - y(d[1]))
+        .attr("fill","purple")
+      .on('mouseover', (d) -> 
+        d3.select(this)
+        .transition()
+        .duration(500)
+        .attr('fill','red')
+        
+        chart.append('text')
+        .text(d[1])
+        .attr('x', x(d[0]) + x.rangeBand() / 2 )
+        .attr('y', y(d[1]) + 15)
+        .attr('class', 'value_bar')
+      )
+      .on('mouseout', (d) ->
+        d3.select(this)
+        .transition()
+        .duration(500)
+        .attr('fill','purple')
+
+        chart.select('text.value_bar').remove()
+
+      ) 
 

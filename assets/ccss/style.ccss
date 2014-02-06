@@ -140,6 +140,7 @@ body:
   bottom   : 16px
   left     : 18px
   width    : 3%
+  opacity  : .7
 
 // ---------------------
 // LOADDING

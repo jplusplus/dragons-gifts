@@ -67,7 +67,10 @@ class AfricaMap
     @groupProject = @group.append("g")
       .attr("class", "all-project-points")
     @drawMap()
-    @drawProjectCircles()
+    if @current_mode == "overview"
+      @drawOverviewCircles()
+    else
+      @drawProjectCircles()
 
   drawMap: =>
     # Create every countries

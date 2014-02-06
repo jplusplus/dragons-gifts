@@ -17,6 +17,7 @@ class Panel
 
   CONFIG = 
     default_picture : "main.jpg" # in the static/images folder
+    default_title   : "Dragon Gift"
 
   constructor: (navigation) ->
 
@@ -35,12 +36,12 @@ class Panel
       nxt_button     :   $(".nxt_button"                          , @ui)
       tour_button    :   $(".tour_button"                         , @ui)
       overview_button:   $(".overview_button"                     , @ui)
+      title          :   $(".img_container .title"                , @ui)
+      img            :   $(".img_container"                       , @ui)
       # single project (TOUR MODE)
       project:
-        title      :     $(".single_project .title"               , @ui)
         location   :     $(".single_project .location"            , @ui)
         description:     $(".single_project .description .wrapper", @ui)
-        img        :     $(".img_container"                       , @ui)
       # country infos (OVERVIEW_MODE)
       overview:
         location    :    $(".overview .location"                  , @ui)
@@ -70,31 +71,37 @@ class Panel
     description.css
       height : $(window).height() - description.offset().top - navigation_btn.outerHeight(true)
 
-  changeIllustration:(img=CONFIG.default_picture) =>
-      @uis.project.img.fadeOut -> 
-        $(this)
-          .css("background-image","url('static/images/#{img}')")
-          .fadeIn()
+  changeIllustration:(img=CONFIG.default_picture, title=CONFIG.default_title, transition=true) =>
+      that = this
+      if transition
+        @uis.img.fadeOut -> 
+          nui = $(this)
+            .css("background-image","url('static/images/#{img}')")
+          that.uis.title.html(title)
+          nui.fadeIn()
+      else
+        @uis.img.css("background-image","url('static/images/#{img}')")
+        @uis.title.html(title)
 
   onProjectSelected: (e, project) =>
     if project?
-      @uis.project.title       .html project.title
+      @changeIllustration(project.img, project.title)
       @uis.project.location    .html project.recipient_oecd_name
       @uis.project.description .html(project.description)
       @uis.project.description.parent().scrollTop(0) # scroll to the top
-      @changeIllustration(project.img)
       description = $($(".Panel .description").get(@navigation.mode)) # select the current description
         .perfectScrollbar()
     else
-      @changeIllustration() #default illustration
+      @changeIllustration(null, null, false) #default illustration
 
   onOverviewSelected: (e, country) =>
     if country?
       details = @navigation.data.projects_details.get(country.Country)
-      @uis.overview.location    .html country.Country
+      @uis.title                .html country.Country
       @uis.overview.amount      .html abbreviateNumber(country.USD)
       @uis.overview.nb_projects .html details['total']
       @chartWidget.render(details)
+      @changeIllustration(null, country.Country, false)  #default illustration
     else
       @changeIllustration()  #default illustration
 
@@ -106,6 +113,7 @@ class Panel
     @uis.views.start_overview.removeClass("hidden") if mode == MODE_START_OVERVIEW
     @uis.views.overview_intro.removeClass("hidden") if mode == MODE_OVERVIEW_INTRO
     @uis.views.overview      .removeClass("hidden") if mode == MODE_OVERVIEW
+    @changeIllustration() if mode == MODE_INTRO # when user get back to the TOUR mode
     @relayout() # resize because the view has changed
 
 # EOF

@@ -1,5 +1,6 @@
 --- 
-css_all: 
+css_all:
+  filters: cssmin
   output: gen/style.css
   contents: 
     - "../assets/css/*.css"
@@ -8,6 +9,7 @@ css_all:
 
 js_all: 
   output: gen/scripts.js
+  filters: jsmin
   contents:
     - "../assets/js/jquery-mini.js"
     - "../assets/js/d3.js"

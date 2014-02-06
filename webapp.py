@@ -22,10 +22,11 @@ assets = Environment(app)
 bundles = YAMLLoader("assets.yaml").load_bundles()
 assets.register(bundles)
 
-
 def get_static_files():
-	return map(lambda _: "static/images/" + _, os.listdir(os.path.join("static", "images")))
-
+	allowed = (".gif", ".png", ".jpg", ".jpeg")
+	files = filter(lambda _: os.path.splitext(_)[1] in allowed, os.listdir(os.path.join("static", "images")))
+	files = map(lambda _: "static/images/" + _, files)
+	return files
 # -----------------------------------------------------------------------------
 #
 # Site pages

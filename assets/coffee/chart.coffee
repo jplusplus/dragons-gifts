@@ -28,7 +28,6 @@ class Chart
     h = 250 - margin.top - margin.bottom
 
 
-    # create svg element
     # parent svg element will contain the chart
     d3.select(@ui).select("svg").remove()
     chart = d3.select(@ui)
@@ -107,8 +106,4 @@ class Chart
         chart.select('text.value_bar').remove()
 
       ) 
-        
-        
-
-    
 

@@ -74,6 +74,7 @@ body:
 // ------------------------
 // CHART
 .chart:
+  fill: white
   .axis path, .axis line:
     fill: none
     stroke: black

@@ -61,8 +61,6 @@ class Navigation
     q.await(@loadedDataCallback)
 
   loadedDataCallback: (error, geojson, tour, overview, projects_details) =>
-    setTimeout(=> @loading()
-    1000)
     @data.projects         = tour
     @data.overview         = overview
     # set a map for projects details with country as key
@@ -74,10 +72,11 @@ class Navigation
     @map         = new AfricaMap(this, geo_features, @data.projects, @data.overview)
     @panel       = new Panel(this)
     @setMode(MODE_INTRO)
+    @toggleLoading()
 
-  loading: =>
+  toggleLoading: =>
     @is_loading = not @is_loading
-    $(".container-full").toggleClass("loading", @is_loading)
+    $(".container-full").toggleClass("on-loading", @is_loading)
     $(document).trigger("loading", @is_loading)
 
   setMode: (mode) =>

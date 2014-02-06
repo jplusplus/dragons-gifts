@@ -26,7 +26,18 @@
 		{% block extra_js %}{% endblock %}
 
 		<script type="text/javascript">
+			// Loader
+			var cl = new CanvasLoader('loader');
+			cl.setColor('#e0e0e0'); // default is '#000000'
+			cl.setDiameter(42);     // default is 40
+			cl.setDensity(43);      // default is 40
+			cl.setSpeed(3);         // default is 2
+			cl.setFPS(34);          // default is 24
+			cl.show();              // Hidden by default
+
+			// used to preload images
 			var files_to_preload = {{ files_to_preload | tojson }};
+			// load and start the navigation
 			var navigation = new Navigation();
 			navigation.init();
 		</script>

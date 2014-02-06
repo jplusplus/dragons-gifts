@@ -134,6 +134,8 @@ body:
 
 // ---------------------
 // LOADDING
+
+// initial value
 .Panel:
   transition-delay: 1s
   transition-property: right
@@ -144,8 +146,17 @@ body:
   transition-duration: 1s
 .toggle-radio:
   transition-delay: 2s
+#loader:
+  transition-property: opacity
+  transition-duration: 1s
+  opacity:0
+  position: absolute
+  left:50%
+  top: 50%
 
-.loading:
+.on-loading:
+  #loader:
+    opacity:1
   .Panel:
     right:-2000px
   .africa-container, .toggle-radio:

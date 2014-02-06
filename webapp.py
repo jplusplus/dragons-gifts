@@ -13,19 +13,18 @@
 from flask import Flask, render_template, request, send_file, \
 	send_from_directory, Response, abort, session, redirect, url_for, make_response
 from flask.ext.assets import Environment, Bundle, YAMLLoader
+import os
 
 app = Flask(__name__)
 app.config.from_pyfile("settings.cfg")
+
 assets = Environment(app)
-
-# js = Bundle('js.', 'base.js', 'widgets.js',
-#             filters='jsmin', output='gen/packed.js')
-# assets.register('js_all', js)
 bundles = YAMLLoader("assets.yaml").load_bundles()
-# css = Bundle('../assets/css/switchbutton.css',
-#             output='gen/style.css')
-
 assets.register(bundles)
+
+
+def get_static_files():
+	return map(lambda _: "static/images/" + _, os.listdir(os.path.join("static", "images")))
 
 # -----------------------------------------------------------------------------
 #
@@ -34,7 +33,7 @@ assets.register(bundles)
 # -----------------------------------------------------------------------------
 @app.route('/')
 def index():
-	response = make_response(render_template('home.html'))
+	response = make_response(render_template('home.html', files_to_preload=get_static_files()))
 	return response
 
 # -----------------------------------------------------------------------------
@@ -44,6 +43,6 @@ def index():
 # -----------------------------------------------------------------------------
 if __name__ == '__main__':
 	# run application
-	app.run(host="0.0.0.0", extra_files=("assets.yaml",))
+	app.run(host="0.0.0.0", extra_files=("assets.yaml"))
 
 # EOF

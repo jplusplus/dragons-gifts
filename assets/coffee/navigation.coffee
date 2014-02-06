@@ -50,12 +50,15 @@ class Navigation
     @uis.switch_mode_radio.change(@onSwitchRadioChanged)
 
   init: =>
-    queue()
+    q = queue()
+    q
       .defer(d3.json, CONFIG.urls.geojson)
       .defer(d3.json, CONFIG.urls.tour)
       .defer(d3.json, CONFIG.urls.overview)
       .defer(d3.csv, CONFIG.urls.projects_details)
-      .await(@loadedDataCallback)
+    for file in files_to_preload
+      q.defer(@loadImage, file)
+    q.await(@loadedDataCallback)
 
   loadedDataCallback: (error, geojson, tour, overview, projects_details) =>
     setTimeout(=> @loading()
@@ -149,4 +152,13 @@ class Navigation
       @setMode(MODE_OVERVIEW_INTRO)
     else
       @setMode(MODE_INTRO)
+
+  loadImage : (src, cb) =>
+    img     = new Image()
+    img.src = src
+    img.onload = ->
+      cb(null, img)
+    img.onerror = ->
+      cb('IMAGE ERROR', null)
+
 # EOF

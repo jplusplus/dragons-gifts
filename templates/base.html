@@ -26,6 +26,7 @@
 		{% block extra_js %}{% endblock %}
 
 		<script type="text/javascript">
+			var files_to_preload = {{ files_to_preload | tojson }};
 			var navigation = new Navigation();
 			navigation.init();
 		</script>

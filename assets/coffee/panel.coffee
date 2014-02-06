@@ -44,7 +44,6 @@ class Panel
         description:     $(".single_project .description .wrapper", @ui)
       # country infos (OVERVIEW_MODE)
       overview:
-        location    :    $(".overview .location"                  , @ui)
         amount      :    $(".overview #tot_usd"                   , @ui)
         nb_projects :    $(".overview #tot_prj"                   , @ui)
 

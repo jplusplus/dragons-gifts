@@ -13,7 +13,7 @@ body:
   background-image: url("../images/zwartevilt.png")
   color : #E1E1E1
   overflow: hidden
-  font-family: 'Roboto', sans-serif
+  font-family: 'Duru Sans', sans-serif
 
 .container:
   overflow       : hidden
@@ -36,8 +36,8 @@ body:
     border-color: #00628B.darken(40%).darken(80%)
 
 .Panel:
-  background-color: "rgba(0,0,0,0.5)"
-  box-shadow: 15px -1px 37px white
+  background-color: "rgba(0,0,0,0.7)"
+  box-shadow: -17px 14px 41px #000000
   .title:
     padding-left : 10px
     color        : white

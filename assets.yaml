@@ -18,6 +18,7 @@ js_all:
     - "../assets/js/topojson.js"
     - "../assets/js/bootstrap.min.js"
     - "../assets/js/jquery.qtip.js"
+    - "../assets/js/perfect-scrollbar-0.4.8.with-mousewheel.min.js"
     - contents:
       - "../assets/coffee/map.coffee"
       - "../assets/coffee/panel.coffee"

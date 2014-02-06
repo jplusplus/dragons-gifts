@@ -25,8 +25,19 @@ body:
   margin-bottom    : -99999px
   padding-bottom   : 99999px
 
+.btn:
+  background-color: #00628B
+  border-color: #00628B.darken(80%)
+  &:active, &:focus:
+    background-color: #00628B.darken(80%)
+    border-color: #00628B.darken(80%).darken(80%)
+  &:hover:
+    background-color: #00628B.darken(40%)
+    border-color: #00628B.darken(40%).darken(80%)
+
 .Panel:
   background-color: "rgba(0,0,0,0.5)"
+  box-shadow: 15px -1px 37px white
   .title:
     padding-left : 10px
     color        : white
@@ -44,14 +55,16 @@ body:
     position         : relative
     height           : 300px
     background-size  : cover
-  .location:
-    font-weight  : bold
-    font-size    : 1.3em
-    padding-left : 10px
-    padding-top  : 5px
   .description:
-    overflow     : auto
+    position:relative
+    overflow : hidden
+    > .location:
+      font-weight  : bold
+      font-size    : 1.3em
+      padding-left : 10px
+      padding-top  : 5px
     > .wrapper:
+      position: relative
       padding : 20px
       max-width: 500px
       font-size: 1.3em
@@ -94,7 +107,7 @@ body:
 .toggle-radio:
   position:absolute
   right: 0
-
+  right: 20px
 // ---------------------
 // MAP
 .africa-container:

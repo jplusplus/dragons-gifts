@@ -63,23 +63,27 @@ class Panel
     @relayout()
 
   relayout: =>
-    # usefull for the scrollbar:
-    # set the description height to use the overflow: auto style
+    # usefull for the scrollbar: set the description height
     description    = $($(".Panel .description").get(@navigation.mode)) # select the current description
     navigation_btn = $(@uis.navigation_btn.get(@navigation.mode))
     description.css
       height : $(window).height() - description.offset().top - navigation_btn.outerHeight(true)
 
   changeIllustration:(img=CONFIG.default_picture) =>
-      @uis.project.img.css("background-image","url('static/images/#{img}')")
+      @uis.project.img.fadeOut -> 
+        $(this)
+          .css("background-image","url('static/images/#{img}')")
+          .fadeIn()
 
   onProjectSelected: (e, project) =>
     if project?
       @uis.project.title       .html project.title
-      @uis.project.location    .html project.recipient_condensed
+      @uis.project.location    .html project.recipient_oecd_name
       @uis.project.description .html(project.description)
       @uis.project.description.parent().scrollTop(0) # scroll to the top
       @changeIllustration(project.img)
+      description = $($(".Panel .description").get(@navigation.mode)) # select the current description
+        .perfectScrollbar()
     else
       @changeIllustration() #default illustration
 

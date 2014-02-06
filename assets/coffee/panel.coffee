@@ -92,7 +92,7 @@ class Panel
     if country?
       details = @navigation.data.projects_details.get(country.Country)
       @uis.overview.location    .html country.Country
-      @uis.overview.amount      .html country.USD
+      @uis.overview.amount      .html abbreviateNumber(country.USD)
       @uis.overview.nb_projects .html details['total']
       @chartWidget.render(details)
     else

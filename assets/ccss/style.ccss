@@ -88,14 +88,15 @@ body:
 // ------------------------
 // CHART
 .chart:
-  fill: white
+  fill: black
   .axis path, .axis line:
     fill: none
-    stroke: black
+    stroke: white
     shape-rendering: crispEdges
   .axis text:
     font-family: sans-serif
     font-size: 11px
+    fill: white
   .value_bar:
     font-family: sans-serif
     font-size: 13px

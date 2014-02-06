@@ -37,7 +37,7 @@
 
 			// used to preload images
 			var files_to_preload = {{ files_to_preload | tojson }};
-			// load and start the navigation
+			// load and start the navigation (it will remove the loader in @loadedDataCallback())
 			var navigation = new Navigation();
 			navigation.init();
 		</script>

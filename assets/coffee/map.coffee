@@ -148,8 +148,7 @@ class AfricaMap
 
   onOverviewSelected: (e, country) =>
     ### color the circle on the map ###
-    @circles.each (d, i) ->
-      d3.select(this).classed("active", country is d)
+    @circles.each (d, i) -> d3.select(this).classed("active", country is d)
 
   drawOverviewCircles: =>
     that = this
@@ -179,8 +178,8 @@ class AfricaMap
   onModeChanged: (e, mode) =>
     if (mode == MODE_OVERVIEW or mode == MODE_OVERVIEW_INTRO)
       if @current_mode != "overview"
-        @drawOverviewCircles()
         @current_mode = "overview"
+        @drawOverviewCircles()
     else if @current_mode != "project"
       @current_mode = "project"
       @drawProjectCircles()

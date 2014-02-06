@@ -33,6 +33,7 @@ class Navigation
   constructor: ->
     @mode             = undefined
     @current_project  = undefined
+    current_overview  = undefined
     @is_loading       = true
     # data (from csv)
     @data =
@@ -47,7 +48,7 @@ class Navigation
       page              : $(".container:first")
       switch_mode_radio : $(".toggle-radio input[name=ab]")
     # bind event
-    @uis.switch_mode_radio.change(@onSwitchRadioChanged)
+    @uis.switch_mode_radio.on("click", @onSwitchRadioClick)
 
   init: =>
     q = queue()
@@ -56,6 +57,7 @@ class Navigation
       .defer(d3.json, CONFIG.urls.tour)
       .defer(d3.json, CONFIG.urls.overview)
       .defer(d3.csv, CONFIG.urls.projects_details)
+    # preload images 
     for file in files_to_preload
       q.defer(@loadImage, file)
     q.await(@loadedDataCallback)
@@ -72,10 +74,11 @@ class Navigation
     @map         = new AfricaMap(this, geo_features, @data.projects, @data.overview)
     @panel       = new Panel(this)
     @setMode(MODE_INTRO)
-    @toggleLoading()
+    # remove the loader
+    @toggleLoading(false)
 
-  toggleLoading: =>
-    @is_loading = not @is_loading
+  toggleLoading:  (is_loading) =>
+    @is_loading = is_loading or not @is_loading
     $(".container-full").toggleClass("on-loading", @is_loading)
     $(document).trigger("loading", @is_loading)
 
@@ -90,6 +93,8 @@ class Navigation
           @setProject(0)
       else
         @setProject(null)
+      if @mode == MODE_OVERVIEW_INTRO
+        @setOverview(null)
       # update the mode switcher radio
       if @mode == MODE_TOUR
         @uis.switch_mode_radio.prop('checked', false).filter("[value=tour]").prop('checked', true)
@@ -129,7 +134,7 @@ class Navigation
       @current_overview = country
       # ensure the mode
       @setMode(MODE_OVERVIEW) if country?
-    $(document).trigger("overviewSelected", if @current_overview? then @data.overview[@current_overview] else null)
+      $(document).trigger("overviewSelected", if @current_overview? then @data.overview[@current_overview] else null)
 
   nextProject: =>
     if @hasNext()
@@ -146,8 +151,9 @@ class Navigation
   hasNext    : => @current_project < @data.projects.length - 1
   hasPrevious: => @current_project > 0
 
-  onSwitchRadioChanged: =>
-    if @uis.switch_mode_radio.filter(":checked").val() == "overview"
+  onSwitchRadioClick: =>
+    val = @uis.switch_mode_radio.filter(":checked").val()
+    if val == "overview"
       @setMode(MODE_OVERVIEW_INTRO)
     else
       @setMode(MODE_INTRO)

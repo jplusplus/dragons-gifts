@@ -97,6 +97,7 @@ class AfricaMap
           .transition()
             .ease(CONFIG.transition_circle_ease)
             .duration(CONFIG.transition_circle_duration)
+            .delay(CONFIG.transition_map_duration)
               .attr("r" , get_radius)
       else
        d3.select(this)
@@ -142,6 +143,7 @@ class AfricaMap
       @group.selectAll("path, circle")
         .transition()
           .duration(CONFIG.transition_map_duration)
+          .delay(CONFIG.transition_circle_duration)
           .attr "transform", "translate(0,0)scale(1)"
 
   onOverviewSelected: (e, country) =>

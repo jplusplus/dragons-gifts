@@ -21,6 +21,7 @@ js_all:
     - "../assets/js/perfect-scrollbar-0.4.8.with-mousewheel.min.js"
     - "../assets/js/heartcode-canvasloader-min.js"
     - contents:
+      - "../assets/coffee/filters.coffee"
       - "../assets/coffee/map.coffee"
       - "../assets/coffee/panel.coffee"
       - "../assets/coffee/chart.coffee"

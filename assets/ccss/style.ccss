@@ -88,6 +88,7 @@ body:
     fill: white
     text-anchor: middle
 
+
 // ---------------------
 // Toogle button radio
 .toggle-radio:

@@ -40,7 +40,6 @@ class Panel
       img            :   $(".img_container"                       , @ui)
       # single project (TOUR MODE)
       project:
-        location   :     $(".single_project .location"            , @ui)
         description:     $(".single_project .description .wrapper", @ui)
       # country infos (OVERVIEW_MODE)
       overview:
@@ -86,8 +85,7 @@ class Panel
 
   onProjectSelected: (e, project) =>
     if project?
-      @changeIllustration(project.img, project.title)
-      @uis.project.location    .html project.recipient_oecd_name
+      @changeIllustration(project.img, "#{project.title}, #{project.recipient_oecd_name}")
       @uis.project.description .html(project.description)
       @uis.project.description.parent().scrollTop(0) # scroll to the top
       description = $($(".Panel .description").get(@navigation.mode)) # select the current description

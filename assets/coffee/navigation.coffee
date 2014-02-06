@@ -74,7 +74,6 @@ class Navigation
 
   loading: =>
     @is_loading = not @is_loading
-    console.log "cpcou", @is_loading, $(".container-full")
     $(".container-full").toggleClass("loading", @is_loading)
     $(document).trigger("loading", @is_loading)
 

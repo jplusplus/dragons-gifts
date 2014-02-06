@@ -104,13 +104,15 @@ body:
     fill: white
     text-anchor: middle
 
-
 // ---------------------
 // Toogle button radio
 .toggle-radio:
-  position:absolute
-  right: 0
-  right: 20px
+  position   : absolute
+  right      : 0
+  right      : 20px
+  height     : 40px
+  box-shadow : "3px 3px 20px rgba(0,0,0,.7)"
+
 // ---------------------
 // MAP
 .africa-container:

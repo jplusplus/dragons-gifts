@@ -67,7 +67,7 @@ body:
     > .wrapper:
       position: relative
       padding : 20px
-      max-width: 500px
+      max-width: 1000px
       font-size: 1.3em
   .but:
     margin-top: 10px

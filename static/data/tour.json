@@ -1,5 +1,18 @@
 [
   {
+    "project_id":178,
+    "title":"Merowe Dam",
+    "long_title":"Construction of the Merowe hydroelectric dam",
+    "year":2003,
+    "lat":18.6,
+    "lon":32.05,
+    "description":"(PPIAF-ID:256) In December 2003, the China Exim Bank approved a $519 million USD loan for the construction of the 1,250 MW Merowe hydroelectric dam. The dam is located at longitude 32 E, and latitude 19 N. The dam was constructed by a joint venture of China International Water Electric Corp. and SinoHydro. The project was completed around the beginning of 2009. The actual start date is unknown. An estimated 60,000 civilians were displaced by the construction. Sudanese civilians protested the projectâ€™s execution from the start, and in a confrontation by authorities in April 2006, five people from a displaced community were killed. STAFF_NOTE: The International Rivers report on this dam listed the project value at $1.5 billion, which probably includes the construction of the transmission line system, ID#695.",
+    "usd_defl":836149339.6,
+    "alt":"",
+    "recipient_oecd_name":"Sudan",
+    "img":"dam.jpg"
+  },
+  {
     "project_id":962,
     "title":" Africa Union HQ",
     "long_title":"Expansion of AU headquarters and conference center",
@@ -13,17 +26,18 @@
     "img":"hq.jpg"
   },
   {
-    "project_id":178,
-    "title":"Merowe Dam",
-    "long_title":"Construction of the Merowe hydroelectric dam",
-    "year":2003,
-    "lat":18.6,
-    "lon":32.05,
-    "description":"(PPIAF-ID:256) In December 2003, the China Exim Bank approved a $519 million USD loan for the construction of the 1,250 MW Merowe hydroelectric dam. The dam is located at longitude 32 E, and latitude 19 N. The dam was constructed by a joint venture of China International Water Electric Corp. and SinoHydro. The project was completed around the beginning of 2009. The actual start date is unknown. An estimated 60,000 civilians were displaced by the construction. Sudanese civilians protested the projectâ€™s execution from the start, and in a confrontation by authorities in April 2006, five people from a displaced community were killed. STAFF_NOTE: The International Rivers report on this dam listed the project value at $1.5 billion, which probably includes the construction of the transmission line system, ID#695.",
-    "usd_defl":836149339.6,
-    "alt":"",
-    "recipient_oecd_name":"Sudan",
-    "img":"dam.jpg"
+    "project_id":947,
+    "title":"Thika road",
+    "long_title":"Expansion of Nairobi-Thika road Section three",
+    "year":2009,
+    "lat":-1.28,
+    "lon":36.8,
+    "description":"In 2009, the Export-Import Bank of China provided CNY 1.068 billion for section three of the eight-lane highway, flyovers, and underpasses to be constructed by Shenli Engineering and Construction. The project was completed in 2012, and in whole by Shenli, Sinohydro Corp, and China Wu Yi. The total cost of the project was $156.39 million. (PPIAF) The roadwork features an eight lane highway and flyovers as well as underpasses in an effort to decongest this road. China Ex-Im Bank provided 1.068 billion Yuan for section three of the road. The contractor is Shenli Engineering Construction Group (Ltd.) from China. Total Project Cost: USD 156.368960468521 Million; PPIAF-ID:156 STAFF_NOTES: Since the degree of concessionality is unknown, the project was left ODF-vague. ",
+    "crs_sector_name":"Transport and Storage",
+    "recipient_oecd_name":"Kenya",
+    "img":"road.jpg",
+    "alt":"credit",
+    "usd_defl":156336547.5
   },
   {
     "project_id":23150,
@@ -95,19 +109,5 @@
     "alt":"credit",
     "usd_defl":3364501428
 
-  },
-  {
-    "project_id":947,
-    "title":"Thika road",
-    "long_title":"Expansion of Nairobi-Thika road Section three",
-    "year":2009,
-    "lat":-1.28,
-    "lon":36.8,
-    "description":"In 2009, the Export-Import Bank of China provided CNY 1.068 billion for section three of the eight-lane highway, flyovers, and underpasses to be constructed by Shenli Engineering and Construction. The project was completed in 2012, and in whole by Shenli, Sinohydro Corp, and China Wu Yi. The total cost of the project was $156.39 million. (PPIAF) The roadwork features an eight lane highway and flyovers as well as underpasses in an effort to decongest this road. China Ex-Im Bank provided 1.068 billion Yuan for section three of the road. The contractor is Shenli Engineering Construction Group (Ltd.) from China. Total Project Cost: USD 156.368960468521 Million; PPIAF-ID:156 STAFF_NOTES: Since the degree of concessionality is unknown, the project was left ODF-vague. ",
-    "crs_sector_name":"Transport and Storage",
-    "recipient_oecd_name":"Kenya",
-    "img":"road.jpg",
-    "alt":"credit",
-    "usd_defl":156336547.5
   }
 ]

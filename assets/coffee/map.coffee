@@ -18,7 +18,7 @@ class AfricaMap
   CONFIG =
     close_zoom                 : 2
     radius_circle_tour         : 7
-    scale_range_overview       : [4, 15] # scale for compute the circle radius
+    scale_range_overview       : [4, 15] # scale to compute the circle radius
     transition_map_duration    : 1000
     transition_circle_duration : 500
     transition_circle_ease     : "easeInSine"
@@ -53,7 +53,7 @@ class AfricaMap
     # Create projection
     @projection = d3.geo.mercator()
       .scale(@width * .6) # ... depends of the projection I think. Try!
-      .translate([@width/2 - 50, @height/2 + 50])
+      .translate([@width/2 - 80, @height/2 + 50])
 
     # Create the Africa path
     @path = d3.geo.path()

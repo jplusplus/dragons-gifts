@@ -84,7 +84,7 @@ class Chart
         .on('mouseover', (d) -> 
           d3.select(this)
           .transition()
-          .duration(300)
+          .duration(200)
           .attr('fill','red')
           chart.append('text')
           .text(d[1])
@@ -95,7 +95,7 @@ class Chart
         .on('mouseout', (d) -> 
           d3.select(this)
           .transition()
-          .duration(300)
+          .duration(200)
           .attr('fill','#00628B')
           chart.select('text.value_bar').remove()
         )

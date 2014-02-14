@@ -88,7 +88,7 @@ class Panel
       @changeIllustration(project.img, "#{project.title}, #{project.recipient_oecd_name}")
       @uis.project.description .html(project.description)
       @uis.project.description.parent().scrollTop(0) # scroll to the top
-      description = $($(".Panel .description").get(@navigation.mode)) # select the current description
+      $($(".Panel .description").get(@navigation.mode)) # select the current description
         .perfectScrollbar()
     else
       @changeIllustration(null, null, false) #default illustration
@@ -112,6 +112,8 @@ class Panel
     @uis.views.start_overview.removeClass("hidden") if mode == MODE_START_OVERVIEW
     @uis.views.overview_intro.removeClass("hidden") if mode == MODE_OVERVIEW_INTRO
     @uis.views.overview      .removeClass("hidden") if mode == MODE_OVERVIEW
+    $($(".Panel .description").get(@navigation.mode)) # select the current description
+        .perfectScrollbar()
     @changeIllustration() if mode == MODE_INTRO # when user get back to the TOUR mode
     @relayout() # resize because the view has changed
 

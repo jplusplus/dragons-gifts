@@ -15,7 +15,7 @@
 # -----------------------------------------------------------------------------
 class Panel
 
-  CONFIG = 
+  CONFIG =
     default_picture : "main.jpg" # in the static/images folder
     default_title   : "The Dragon's Gifts"
 
@@ -74,7 +74,7 @@ class Panel
   changeIllustration:(img=CONFIG.default_picture, title=CONFIG.default_title, transition=true) =>
       that = this
       if transition
-        @uis.img.fadeOut -> 
+        @uis.img.fadeOut ->
           nui = $(this)
             .css("background-image","url('static/images/#{img}')")
           that.uis.title.html(title)

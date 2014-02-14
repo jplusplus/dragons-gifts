@@ -1,24 +1,31 @@
 
 
-MAP_COLOR          = #00628B
-MAP_STROKE_COLOR   = $MAP_COLOR.brighten(60%)
+MAP_COLOR          = #AEA49A
+MAP_STROKE_COLOR   = $MAP_COLOR.brighten(30%)
 MAP_STROKE_WIDTH   = 1
 
-CIRCLE_COLOR       = #E6E6DC
+CIRCLE_COLOR       = #128983
 CIRCLE_COLOR_HOVER = $CIRCLE_COLOR.darken(70%)
-CIRCLE_STROKE      = $CIRCLE_COLOR.darken(70%)
+CIRCLE_STROKE      = $CIRCLE_COLOR
 
 body:
-  //background-image: url("../images/fresh_snow.png") # light
   background-image: url("../images/zwartevilt.png")
   color : #E1E1E1
   overflow: hidden
   font-family: 'Duru Sans', sans-serif
 
-.container:
-  overflow       : hidden
-  margin-top     : 10px
-  padding-bottom : 10px
+  a:
+    color: #128983
+    &:hover:
+      color: #128983.darken(20%)
+
+.container-full:
+  position: absolute
+  top: 0
+  bottom: 0
+  left: 0
+  right: 0
+  box-shadow: "0 0 100px 30px rgba(0, 0, 0, 0.6) inset"
 
 .grid:
   background-color : white
@@ -26,30 +33,34 @@ body:
   padding-bottom   : 99999px
 
 .btn:
-  background-color: #00628B
-  border-color: #00628B.darken(80%)
+  background-color: #128983
+  border-color: transparent
+  border-radius: 2px
   &:active, &:focus:
-    background-color: #6D9EB3.darken(80%)
-    border-color: #6D9EB3.darken(80%).darken(80%)
+    background-color: #128983.darken(80%)
   &:hover:
-    background-color: #00628B.darken(40%)
-    border-color: #00628B.darken(40%).darken(80%)
+    background-color: #128983.darken(40%)
 
 .ps-container .ps-scrollbar-y-rail:hover, .ps-container .ps-scrollbar-y-rail.hover :
   background-color: #2C2A2A
 
 .Panel:
-  background-color: "rgba(0,0,0,0.7)"
-  box-shadow: "0px 14px 10px 5px rgba(0,0,0,0.6)"
+  background-color: #fff
+  box-shadow      : 0 -2px 2px 0 rgb(0,0,0)
+  color           : #0e1b1e
+  padding         : 0
+  overflow        : hidden
+  //box-shadow: "0px 14px 10px 5px rgba(0,0,0,0.6)"
   .title:
-    padding-left : 20px
+    padding      : 10px 20px
     color        : white
     bottom       : 0
     position     : absolute
     font-size    : 2em
     left         : 0
-    right        : 0        
-    background-color : "rgba(0,0,0,0.5)"
+    right        : 0
+    background   : "rgba(14,25,30,0.5)"
+    box-shadow   : 2px 0 2px 0 "rgba(0,0,0,0.5)"
 
   #figures:
     padding-top:10px
@@ -80,9 +91,14 @@ body:
   .but:
     margin-top: 10px
   .navigation-buttons:
+    margin    : 0 -10px
+    padding   : 20px 30px
+    background: #F3F1F1
+    position  : relative
+    box-shadow: "2px 0 2px 0 rgba(0,0,0,0.5) inset"
     button:
       min-width:104px
-      margin: 20px
+      margin: 0 20px
   // --------------------
   // Different views in the panel (depending of mode)
   .view:
@@ -114,12 +130,17 @@ body:
 
 // ---------------------
 // Toogle button radio
-.toggle-radio:
+.use-base .toggle-radio:
   position   : absolute
   right      : 0
   right      : 20px
   height     : 40px
-  box-shadow : "3px 3px 20px rgba(0,0,0,.7)"
+  box-shadow : "3px 3px 10px rgba(0,0,0,.3)"
+  padding    : 0
+  label:
+    width    : auto
+    padding  : 10px
+
 
 // ---------------------
 // MAP
@@ -149,7 +170,7 @@ body:
   position : absolute
   bottom   : 16px
   left     : 18px
-  width    : 3%
+  width    : 6%
   opacity  : .7
 
 // ---------------------
@@ -164,8 +185,11 @@ body:
 .africa-container, .toggle-radio:
   transition-property: opacity
   transition-duration: 2s
-.toggle-radio:
+.use-base .toggle-radio:
+  width: auto
   transition-delay: 2s
+.use-base .toggle-radio:not(.old-ie) [type="radio"]:checked + label:
+  background: #128983
 #loader:
   transition-property        : opacity
   transition-duration        : 1s

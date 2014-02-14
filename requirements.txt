@@ -10,3 +10,4 @@ PyYAML==3.10
 webassets==0.8
 Werkzeug==0.9.4
 wsgiref==0.1.2
+cssmin==0.2.0

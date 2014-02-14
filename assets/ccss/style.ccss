@@ -115,7 +115,7 @@ body:
   fill: black
   .axis path, .axis line:
     fill: none
-    stroke: white
+    stroke: black
     shape-rendering: crispEdges
   .axis text:
     font-family: sans-serif

@@ -108,8 +108,6 @@ class AfricaMap
 
   drawProjectCircles: =>
     that = this
-    # compute scale
-    values = @projects.map((d) -> parseFloat(d.usd_defl))
     #remove previous circles
     @groupOverview.selectAll("circle").transition()
       .ease(CONFIG.transition_circle_ease)

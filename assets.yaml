@@ -1,6 +1,6 @@
 --- 
 css_all:
-  filters: cssmin
+  #filters: cssmin
   output: gen/style.css
   contents: 
     - "../assets/css/*.css"

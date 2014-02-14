@@ -85,7 +85,7 @@ class Chart
           d3.select(this)
           .transition()
           .duration(200)
-          .attr('fill','red')
+          .attr('fill','#973b3b')
           chart.append('text')
           .text(d[1])
           .attr('x', x(d[0]) + x.rangeBand() / 2 )
@@ -96,7 +96,7 @@ class Chart
           d3.select(this)
           .transition()
           .duration(200)
-          .attr('fill','#00628B')
+          .attr('fill','#128983')
           chart.select('text.value_bar').remove()
         )
         .transition()
@@ -107,6 +107,6 @@ class Chart
             .attr("width", x.rangeBand())
             .attr("height", (d) -> h - y(d[1]))
             .attr("y", (d) -> y(d[1]))
-            .attr("fill","#00628B")
+            .attr("fill","#128983")
         
 

@@ -24,4 +24,8 @@ freeze:
 	# Commit changes
 	cd build; git add -A .; git commit -am "Build "$(BUILD_TIME)
 
+deploy:
+	make freeze
+	cd build; git push heroku master
+
 # EOF

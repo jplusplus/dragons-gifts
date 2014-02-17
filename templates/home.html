@@ -16,7 +16,17 @@
 		</div>
 		{% include "panel.html" %}
 	</row>
-	<a href="http://jplusplus.org" target="_blank"><img class="logojpp" src="{{ url_for('static', filename='images/jpp.png')}}"/></a>
+	<footer>
+		<p class="credits">	
+			A project<br />
+			by <a href="http://twitter.com/jackottaviani" target="_blank">@jackottaviani</a>
+		</p>
+		<p class="logojpp">
+			<a href="http://jplusplus.org" target="_blank">
+				<img src="{{ url_for('static', filename='images/jpp.png')}}"/>
+			</a>
+		</p>
+	</footer>
 </div>
 
 {% endblock %}

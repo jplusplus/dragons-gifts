@@ -17,7 +17,7 @@ body:
   a:
     color: #128983
     &:hover:
-      color: #128983.darken(20%)
+      color: #128983.brighten(20%)
 
 .container-full:
   position: absolute
@@ -166,12 +166,26 @@ body:
 
 // ---------------------
 // LOGO JPLUSPLUS
-.logojpp:
+footer:
   position : absolute
   bottom   : 16px
-  left     : 18px
-  width    : 6%
-  opacity  : .7
+  left     : 16px
+  opacity    : .7
+  .logojpp:
+    width      : 120px
+    display    : block
+    height     : 80px
+    margin-top : 20px
+    img:
+      width    : 100%
+  .credits:
+    font-size  : 12px
+    white-space: nowrap
+    padding-top: 20px
+    z-index    : 100
+    display    : block
+    width      : 120px
+    text-align : center
 
 // ---------------------
 // LOADDING

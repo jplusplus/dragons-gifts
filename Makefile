@@ -20,7 +20,6 @@ freeze:
 	mv build/index.html build/home.html
 	# One-line micro server with heroku
 	echo '<?php include_once("home.html"); ?>' > build/index.php
-	echo $(BUILD_TIME)
 	# Commit changes
 	cd build; \
 		git add -A .; 

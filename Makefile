@@ -22,6 +22,6 @@ freeze:
 	echo '<?php include_once("home.html"); ?>' > build/index.php
 	echo $(BUILD_TIME)
 	# Commit changes
-	cd build; git add -A .; git commit -am $(BUILD_TIME)
+	cd build; git add -A .; git commit -am "Build "$(BUILD_TIME)
 
 # EOF

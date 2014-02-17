@@ -1,7 +1,7 @@
 # Makefile -- DragonGifts
 
 WEBAPP     = $(wildcard webapp.py)
-BUILD_TIME = $(date +%s)
+BUILD_TIME = `date +%s`
 
 run:
 	. `pwd`/.env ; python $(WEBAPP)
@@ -21,6 +21,7 @@ freeze:
 	# One-line micro server with heroku
 	echo '<?php include_once("home.html"); ?>' > build/index.php
 	# Commit changes
-	cd build; git add -A .; git commit -am $BUILD_TIME
+	echo $(BUILD_TIME)
+	cd build; git add -A .; git commit -am $(BUILD_TIME)
 
 # EOF

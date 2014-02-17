@@ -12,7 +12,7 @@ install:
 
 freeze:
 	# Remove everything but the .git direcotry 
-	find ./build -type f -not -name '.git' | xargs
+	find ./build -not -path "./build/.git*" -not -path "./build" | xargs rm -rf
 	# Freeze the flask app
 	. `pwd`/.env ; python -c "from webapp import app; from flask_frozen import Freezer; freezer = Freezer(app); freezer.freeze()"
 	rm build/static/.webassets-cache/ -r
@@ -22,12 +22,11 @@ freeze:
 	echo '<?php include_once("home.html"); ?>' > build/index.php
 	# Commit changes
 	cd build; \
-		git add -A .; 
+		git add -A .;
 		git commit -am "Build "$(BUILD_TIME)
 
 deploy:
 	make freeze
-	cd build; \
-		git push heroku master
+	cd build; git push heroku master
 
 # EOF

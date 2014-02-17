@@ -21,7 +21,6 @@ freeze:
 	# One-line micro server with heroku
 	echo '<?php include_once("home.html"); ?>' > build/index.php
 	# Commit changes
-	echo $(BUILD_TIME)
-	cd build; git add -A .; git commit -am $(BUILD_TIME)
+	cd build; git add -A .; git commit -am "Build $BUILD_TIME"
 
 # EOF

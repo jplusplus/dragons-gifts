@@ -141,16 +141,6 @@ body:
     width    : auto
     padding  : 10px
 
-.credit:
-  color      : #d3d3d3
-  z-index    : 9999
-  position   : absolute
-  right      : 20px
-  bottom     : 16px
-  font-size  : 0.6em
-  padding    : 0
-
-
 
 // ---------------------
 // MAP
@@ -180,6 +170,7 @@ footer:
   position : absolute
   bottom   : 16px
   left     : 16px
+  right     : 50%
   opacity    : .7
   .logojpp:
     width      : 120px
@@ -187,6 +178,15 @@ footer:
     margin-top : 20px
     img:
       width    : 65%
+
+  .credit:
+    color      : #d3d3d3
+    z-index    : 9999
+    position   : absolute
+    right      : 20px
+    bottom     : 16px
+    font-size  : 0.6em
+    padding    : 0
 
 
 // ---------------------

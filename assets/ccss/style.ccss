@@ -141,6 +141,16 @@ body:
     width    : auto
     padding  : 10px
 
+.credit:
+  color      : #d3d3d3
+  z-index    : 9999
+  position   : absolute
+  right      : 20px
+  bottom     : 16px
+  font-size  : 0.6em
+  padding    : 0
+
+
 
 // ---------------------
 // MAP
@@ -174,18 +184,10 @@ footer:
   .logojpp:
     width      : 120px
     display    : block
-    height     : 80px
     margin-top : 20px
     img:
-      width    : 100%
-  .credits:
-    font-size  : 12px
-    white-space: nowrap
-    padding-top: 20px
-    z-index    : 100
-    display    : block
-    width      : 120px
-    text-align : center
+      width    : 65%
+
 
 // ---------------------
 // LOADDING

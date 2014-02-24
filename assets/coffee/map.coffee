@@ -29,6 +29,19 @@ class AfricaMap
     @projects     = projects
     @overview     = overview
     @current_mode = undefined
+    
+    # Create svg tag
+    @svg = d3.select(".africa-container")
+      .insert("svg", ":first-child")
+
+    @group = @svg.append("g")
+    # Create the group of path
+    @groupPaths = @group.append("g")
+      .attr("class", "all-path")
+    @groupOverview = @group.append("g")
+      .attr("class", "all-overview-points")
+    @groupProject = @group.append("g")
+      .attr("class", "all-project-points")
 
     @relayout()
 
@@ -44,9 +57,7 @@ class AfricaMap
     if @height > $(window).height()
        @height = $(window).height()
        @width = @height / 1
-    # Create svg tag
-    @svg = d3.select(".africa-container")
-      .insert("svg", ":first-child")
+    @svg = d3.select(".africa-container svg")
       .attr("width", @width * 2)
       .attr("height", $(window).height())
 
@@ -58,27 +69,19 @@ class AfricaMap
     # Create the Africa path
     @path = d3.geo.path()
       .projection(@projection)
-    @group = @svg.append("g")
-    # Create the group of path
-    @groupPaths = @group.append("g")
-      .attr("class", "all-path")
-    @groupOverview = @group.append("g")
-      .attr("class", "all-overview-points")
-    @groupProject = @group.append("g")
-      .attr("class", "all-project-points")
-    @drawMap()
-    if @current_mode == "overview"
-      @drawOverviewCircles()
-    else
-      @drawProjectCircles()
 
-  drawMap: =>
-    # Create every countries
+     # Create every countries
+    @groupPaths.selectAll("path").remove()
     @groupPaths.selectAll("path")
       .data(@countries)
       .enter()
         .append("path")
         .attr("d", @path)
+
+    if @current_mode == "overview"
+      @drawOverviewCircles()
+    else
+      @drawProjectCircles()
 
   drawCircles: (scale_or_radius, radius_field_name="usd_defl", appearing_animatation=true) =>
     that = this

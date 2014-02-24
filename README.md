@@ -1,7 +1,9 @@
 Dragons Gifts
 =============
 
-Berlin - Jan 2014
+Berlin - January 2014
+
+http://jplusplus.github.io/dragons-gifts/
 
 ## The project
 

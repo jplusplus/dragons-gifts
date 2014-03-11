@@ -4,20 +4,20 @@ MAP_COLOR          = #AEA49A
 MAP_STROKE_COLOR   = $MAP_COLOR.brighten(30%)
 MAP_STROKE_WIDTH   = 1
 
-CIRCLE_COLOR       = #128983
+CIRCLE_COLOR       = #fb9d04
 CIRCLE_COLOR_HOVER = $CIRCLE_COLOR.darken(70%)
-CIRCLE_STROKE      = $CIRCLE_COLOR
+CIRCLE_STROKE      = $CIRCLE_COLOR.darken(65%)
 
 body:
   background-image: url("../images/zwartevilt.png")
   color : #E1E1E1
   overflow: hidden
-  font-family: 'Duru Sans', sans-serif
+  font-family: Helvetica, Arial,'Duru Sans', sans-serif
 
   a:
-    color: #128983
+    color: #fb9d04
     &:hover:
-      color: #128983.brighten(20%)
+      color: #fb9d04.brighten(20%)
 
 .container-full:
   position: absolute
@@ -33,13 +33,13 @@ body:
   padding-bottom   : 99999px
 
 .btn:
-  background-color: #128983
+  background-color: #fb9d04
   border-color: transparent
   border-radius: 2px
   &:active, &:focus:
-    background-color: #128983.darken(80%)
+    background-color: #fb9d04.darken(80%)
   &:hover:
-    background-color: #128983.darken(40%)
+    background-color: #fb9d04.darken(40%)
 
 .ps-container .ps-scrollbar-y-rail:hover, .ps-container .ps-scrollbar-y-rail.hover :
   background-color: #2C2A2A
@@ -93,7 +93,7 @@ body:
   .navigation-buttons:
     margin    : 0 -10px
     padding   : 20px 30px
-    background: #F3F1F1
+    background: #eeeeee
     position  : relative
     box-shadow: "2px 0 2px 0 rgba(0,0,0,0.5) inset"
     button:
@@ -205,7 +205,7 @@ footer:
   width: auto
   transition-delay: 2s
 .use-base .toggle-radio:not(.old-ie) [type="radio"]:checked + label:
-  background: #128983
+  background: #fb9d04
 #loader:
   transition-property        : opacity
   transition-duration        : 1s

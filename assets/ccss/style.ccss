@@ -185,7 +185,7 @@ footer:
     position   : absolute
     right      : 20px
     bottom     : 16px
-    font-size  : 0.6em
+    font-size  : 0.66em
     padding    : 0
 
 

@@ -16,6 +16,6 @@ freeze:
 	# Freeze the flask app
 	. `pwd`/.env ; python -c "from webapp import app; from flask_frozen import Freezer; freezer = Freezer(app); freezer.freeze()"
 	-rm build/static/.webassets-cache/ -r
-	sed -i 's/\/static/static/g' build/index.html
+	sed -i -e 's/\/static/static/g' build/index.html
 
 # EOF

@@ -13,6 +13,7 @@ Some analysts talk about soft power. Others raise the alarm over a Chinese invas
 
 Start the tour and have a look at the Chinese projects in Africa, or explore the data and delve into the Chinese presence in the African continent.
 
+![Home Page Screenshot](screenshot.png "Home Page Screenshot")
 
 ## Installation
 

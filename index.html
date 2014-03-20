@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8"></meta>
+		<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+		<link href="/img/favicon.png" type="image/png" rel="icon">
+
+		<title>The Dragon's African spending spree</title>
+
+		
+			<link rel="stylesheet" href="static/gen/style.css?16b5217b" type="text/css" />
+		
+		<!-- <link href='http://fonts.googleapis.com/css?family=Duru+Sans' rel='stylesheet' type='text/css'> -->
+
+	</head>
+
+	<body class="use-base">
+
+		
+
+<div class="container-full on-loading">
+	<div id="loader"></div>
+	<!-- APP -->	
+	<row>
+		<div class="col-xs-6" >
+			<div class="toggle-radio">
+				<input type="radio" name="ab" value="tour" id="a" checked />
+				<label for="a">Tour</label>
+				<input type="radio" name="ab" value="overview" id="b" />
+				<label for="b">Overview</label>
+			</div>
+			<div> <div class="africa-container"></div> </div>
+
+
+		</div>
+		<div class="Panel col-xs-6">
+		<!-- Title & Image (which will contain e.g. the Country Name) -->
+		<div class="img_container">
+			<div class="title">The Dragon's African spending spree</div>
+		</div>
+
+	<!-- view: Introduction text for main page before starting the tour -->
+
+	<div class="view intro_main">
+		<div class="description ">
+			<div class="wrapper">
+		<p>From dams to super-highways, from mining sites to research centers, from the African Union headquarters to more than 40 Confucius institutes, the Chinese presence in Africa is taking shape.</p>
+   
+			<p>Some analysts talk about soft power. Others raise the alarm over Chinese exploitation. The Chinese government emphasises the friendship between the people of China and Africa. Whatever your opinion, Chinese investments in Africa are changing the face of the continent. And they're growing.</p>
+
+			<p>Start the tour and have a closer look at some individual investments, or explore the data to understand more about China's presence.</p><p><div class="img_credit">Photo: <a href="http://www.gettyimages.co.uk/detail/news-photo/an-unidentified-chinese-railway-worker-drills-holes-on-the-news-photo/82979700" target="_blank">Getty Images</a></div></p>
+
+
+
+			</div>
+		</div>
+
+		<div class="text-center navigation-buttons">
+			<!-- Start the tour -->
+			<button type="button" class="but btn btn-primary btn-lg tour_button">Start the tour</button>
+		</div>
+	</div>
+
+	<!-- view: Description of one single project in the tour -->
+	<div class="view single_project hidden">
+		<div class="description">
+			<div class="wrapper">
+			</div>
+		</div>
+		<div class=" text-center navigation-buttons">
+			<!-- Previous Next -->
+			<button type="button" class=" btn but btn-primary btn-lg prv_button">Previous</button>
+			<button type="button" class=" btn but btn-primary btn-lg nxt_button">Next</button>
+		</div>
+	</div>
+
+	<!-- view: start overview -->
+	<div class="view hidden start_overview">
+	 <div class=" description">
+			<div class="wrapper">
+
+			<p>That's the end of the tour. The projects you have been exploring are just a small sample of those that the Chinese government, and its donor agencies, are supporting in Africa.</p>
+
+			<p>You can now check out a map of Chinese-backed projects and investments on the continent, which is based on information from the <a href="http://china.aiddata.org" target="_blank">ChinaAid database</a>, the largest public database of Chinese development finance in Africa. The database is based on cross-checked media-reports (<a href="http://china.aiddata.org/content/methodology" target="_target">see their methodology</a>) and is not meant to be exhaustive, but rather to be a springboard to further research and more transparency.</p>
+
+			<p>If you would like to explore the individual projects again, please restart the tour.</p>
+
+	 		</div>
+	</div>
+		<div class="text-center navigation-buttons">
+			<button type="button" class="but btn btn-primary btn-lg tour_button">Restart the tour</button>
+			<button type="button" class="but btn btn-primary btn-lg overview_button">Explore the data overview</button>
+		</div>
+	</div>
+	<!-- view: overview -->
+	<div class="view hidden overview_intro">
+		<div class="description">
+			<div class="wrapper">
+
+			<p>According to the <a href="http://china.aiddata.org" target="_blank">AidData database</a>, from 2000 to 2012 Chinese government agencies financed more than 1900 projects across Africa.</p>
+
+<p>The total amount of money that China committed to these schemes was at least $128bn. However, only 59% of the projects are identified as implemented or completed, while the remainder are still promised or planned. In 37% of the projects identified, the amount of money allocated is not known.</p>
+
+<p>It is worth noting that Burkina Faso, Swaziland, the Gambia and Sao Tome and Principe did not receive any Chinese money. Unusual for Africa nowadays. But these countries have recognised Taiwan, which China regards a renegade province, as an independent state. 
+The Gambia and Sao Tome and Principe, however, <a href="http://www.newtimes.co.rw/news/index.php?a=72148&i=15543" target="_blank">recently broke</a> diplomatic ties with Taiwan, which some analysts saw as proof of China’s growing clout on the continent with its spending there soaring.</p>
+
+<p>Click on the bubbles to explore data on China’s projects in each country. The bigger the bubble, the more money is involved.</p>
+
+			</div>
+		</div>
+	</div>
+	<!-- view: overview -->
+	<div class="view hidden overview">
+		<div class="description">
+			<div class="wrapper">
+				<table class="table" id="figures">
+					<tr>
+						<td>
+							<div>$USD</div>
+							<div class="value" id="tot_usd"></div>
+						</td>
+						<td rowspan="2">
+							<div id="prj_cat_text">Project categories:</div>
+							<div class="chart"></div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div>Projects</div>
+							<div class="value" id="tot_prj"></div>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+	</row>
+
+	<footer>
+		<p class="logojpp">
+			<a href="http://jplusplus.org" target="_blank">
+				<img src="static/images/jpp.png"/>
+			</a>
+		</p>
+
+		<p class="credit">
+			by <a href="http://twitter.com/jackottaviani" target="_blank">jackottaviani</a>
+		</p>
+	</footer>
+
+	
+
+</div>
+
+
+
+		
+			<script type="text/javascript" src="static/gen/scripts.js?005f0367"></script>
+		
+
+		
+
+		<script type="text/javascript">
+			// Loader
+			var cl = new CanvasLoader('loader');
+			cl.setColor('#e0e0e0'); // default is '#000000'
+			cl.setDiameter(42);     // default is 40
+			cl.setDensity(43);      // default is 40
+			cl.setSpeed(3);         // default is 2
+			cl.setFPS(34);          // default is 24
+			cl.show();              // Hidden by default
+
+			// used to preload images
+			var files_to_preload = ["static/images/hq.jpg", "static/images/confucius.jpg", "static/images/fibre.jpg", "static/images/stadium.jpg", "static/images/thika.jpg", "static/images/researchcenter.jpg", "static/images/fresh_snow.png", "static/images/main.jpg", "static/images/zwartevilt.png", "static/images/dam.jpg", "static/images/platinum.jpg", "static/images/jpp.png", "static/images/railway.jpg"];
+			// load and start the navigation (it will remove the loader in @loadedDataCallback())
+			var navigation = new Navigation();
+			navigation.init();
+		</script>
+
+	</body>
+</html>

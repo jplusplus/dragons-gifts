@@ -184,8 +184,8 @@ footer:
     z-index    : 9999
     position   : absolute
     right      : 20px
-    bottom     : 16px
-    font-size  : 0.66em
+    bottom     : 14px
+    font-size  : 0.68em
     padding    : 0
 
 

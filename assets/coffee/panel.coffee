@@ -17,7 +17,7 @@ class Panel
 
   CONFIG =
     default_picture : "main.jpg" # in the static/images folder
-    default_title   : "The Dragon's Gifts"
+    default_title   : "The Dragon's African spending spree"
 
   constructor: (navigation) ->
 

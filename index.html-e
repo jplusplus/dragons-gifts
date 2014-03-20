@@ -1,4 +1,40 @@
-<div class="Panel col-xs-6">
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8"></meta>
+		<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+		<link href="/img/favicon.png" type="image/png" rel="icon">
+
+		<title>The Dragon's African spending spree</title>
+
+		
+			<link rel="stylesheet" href="/static/gen/style.css?4f9f2fcd" type="text/css" />
+		
+		<!-- <link href='http://fonts.googleapis.com/css?family=Duru+Sans' rel='stylesheet' type='text/css'> -->
+
+	</head>
+
+	<body class="use-base">
+
+		
+
+<div class="container-full on-loading">
+	<div id="loader"></div>
+	<!-- APP -->	
+	<row>
+		<div class="col-xs-6" >
+			<div class="toggle-radio">
+				<input type="radio" name="ab" value="tour" id="a" checked />
+				<label for="a">Tour</label>
+				<input type="radio" name="ab" value="overview" id="b" />
+				<label for="b">Overview</label>
+			</div>
+			<div> <div class="africa-container"></div> </div>
+
+
+		</div>
+		<div class="Panel col-xs-6">
 		<!-- Title & Image (which will contain e.g. the Country Name) -->
 		<div class="img_container">
 			<div class="title">The Dragon's African spending spree</div>
@@ -43,13 +79,12 @@
 	<div class="view hidden start_overview">
 	 <div class=" description">
 			<div class="wrapper">
-
-			<p>That's the end of the tour. The projects you have been exploring are just a small sample of those that the Chinese government, and its donor agencies, are supporting in Africa.</p>
-
-			<p>You can now check out a map of Chinese-backed projects and investments on the continent, which is based on information from the <a href="http://china.aiddata.org" target="_blank">ChinaAid database</a>, the largest public database of Chinese development finance in Africa. The database is based on cross-checked media-reports (<a href="http://china.aiddata.org/content/methodology" target="_target">see their methodology</a>) and is not meant to be exhaustive, but rather to be a springboard to further research and more transparency.</p>
-
-			<p>If you would like to explore the individual projects again, please restart the tour.</p>
-
+			<p>The tour is over. The projects you have been exploring are just a small sample of what the Chinese governement donor agencies are supporting in Africa.
+	 			</p>
+	 			<p>You may now have an overview on our map of Chinese-backed projects and investments in Africa based on the <a href="http://china.aiddata.org" target="_blank">ChinaAid database</a>, the largest public database of Chinese development finance in Africa. The database is based on cross-checked media-reports (<a href="http://china.aiddata.org/content/methodology" target="_target">see their methodology</a>) and it is not meant to be exaustive, but rather to be a springboard to further research and more transparency. 
+	 			</p>
+	 			<p>If you would like to explore the single projects again please restart the tour.
+	 			</p>
 	 		</div>
 	</div>
 		<div class="text-center navigation-buttons">
@@ -100,3 +135,48 @@ The Gambia and Sao Tome and Principe, however, <a href="http://www.newtimes.co.r
 		</div>
 	</div>
 </div>
+	</row>
+
+	<footer>
+		<p class="logojpp">
+			<a href="http://jplusplus.org" target="_blank">
+				<img src="static/images/jpp.png"/>
+			</a>
+		</p>
+
+		<p class="credit">
+			by <a href="http://twitter.com/jackottaviani" target="_blank">jackottaviani</a>
+		</p>
+	</footer>
+
+	
+
+</div>
+
+
+
+		
+			<script type="text/javascript" src="/static/gen/scripts.js?8112e1a6"></script>
+		
+
+		
+
+		<script type="text/javascript">
+			// Loader
+			var cl = new CanvasLoader('loader');
+			cl.setColor('#e0e0e0'); // default is '#000000'
+			cl.setDiameter(42);     // default is 40
+			cl.setDensity(43);      // default is 40
+			cl.setSpeed(3);         // default is 2
+			cl.setFPS(34);          // default is 24
+			cl.show();              // Hidden by default
+
+			// used to preload images
+			var files_to_preload = ["static/images/confucius.jpg", "static/images/dam.jpg", "static/images/fibre.jpg", "static/images/fresh_snow.png", "static/images/hq.jpg", "static/images/jpp.png", "static/images/main.jpg", "static/images/platinum.jpg", "static/images/railway.jpg", "static/images/researchcenter.jpg", "static/images/stadium.jpg", "static/images/thika.jpg", "static/images/zwartevilt.png"];
+			// load and start the navigation (it will remove the loader in @loadedDataCallback())
+			var navigation = new Navigation();
+			navigation.init();
+		</script>
+
+	</body>
+</html>

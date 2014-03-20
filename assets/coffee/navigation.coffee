@@ -25,7 +25,7 @@ class Navigation
 
   CONFIG =
     urls :
-      geojson          : "static/data/africa.json"
+      geojson          : "static/data/africa.topo.json"
       tour             : "static/data/tour.json"
       overview         : "static/data/global_view.json"
       projects_details : "static/data/chart_aiddata.csv"
@@ -69,7 +69,7 @@ class Navigation
     @data.projects_details = d3.map()
     @data.projects_details.set(p.country, p) for p in projects_details
     # get the features from topojson
-    geo_features = topojson.feature(geojson, geojson.objects.continent_Africa_subunits).features
+    geo_features = topojson.feature(geojson, geojson.objects.Africa1).features
     # instanciate widgets
     @map         = new AfricaMap(this, geo_features, @data.projects, @data.overview)
     @panel       = new Panel(this)
